@@ -11,6 +11,5 @@
 int main()
 {
     std::cout << "in demoerror.cpp" << endl;
-
     return 0
 }
