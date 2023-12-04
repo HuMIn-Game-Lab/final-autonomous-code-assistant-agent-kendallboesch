@@ -62,9 +62,11 @@ if instruction == 'errorsolve':
             echo=True,
             stream=False
         )
-        print(response['choices'][0]['text'])
-  
-
+        # print(response['choices'][0]['text'])
+        text = response['choices'][0]['text']
+        LLMresponse = text[len(prompt):]
+        print(LLMresponse)
+        
         write.append(response)
     with open("Data/convo.json", 'w') as json_file:
         json.dump(write, json_file, indent=4)
