@@ -2,7 +2,7 @@ lib:
 		clang++ -std=c++14 -shared -o ./Code/jobsystem/libjobsystem.so -fPIC ./Code/jobsystem/*.cpp -pthreads
 
 build:
-		clang++ -std=c++14 -o output Code/main.cpp -L./Code/jobsystem -ljobsystem 
+		clang++ -std=c++14 -o output Code/*.cpp -L./Code/jobsystem -ljobsystem 
 		
 compile: 
 		make lib
