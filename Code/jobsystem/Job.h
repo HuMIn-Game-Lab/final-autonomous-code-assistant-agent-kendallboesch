@@ -18,8 +18,8 @@ struct Error
     std::string src;
     std::string srcResolved;
     std::string resDescr;  
-    std::string pred; 
-    std::string suc; 
+    std::string previousLine; 
+    std::string nextLine; 
 };
 
 class Job{
