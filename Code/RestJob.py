@@ -16,13 +16,13 @@ promptFile = sys.argv[3]
 model = "NA"
 openai.api_key = "not needed for a local LLM"
 
-print(f'instruction: {instruction}')
+# print(f'instruction: {instruction}')
 
 if instruction == 'errorsolve':
 
     file = open(promptFile)
     data =json.load(file)
-    resultFormatInstruct = "{\n{\'colNum\' : #}, \n {\'errorMessage\': \'\'},\n{\'file\': \'\'},\n{\'lineNum\': #},\n{\'resDescr\': \'\'},\n{\'src\': \'\'},\n{\'srcResolved\': \'\'}\n}\n"
+    resultFormatInstruct = "{\n{\'colNum\' : #}, \n {\'errorMessage\': \'\'},\n{\'file\': \'\'},\n{\'lineNum\': #},\n{\'nextLine\':\'\'},\n{\'previousLine\':\'\'},\n{\'resDescr\': \'\'},\n{\'src\': \'\'},\n{\'srcResolved\': \'\'}\n}\n"
     basePromptInstruct=f"This is the format of an error object:\n {resultFormatInstruct}\n"
     instructionInstruct="For each error object given, provide the resolved C++ code in the \'srcResolved\' member, and provide a description of the fix in the \'resDescr\' member.\n"
     jsonOnlyInstruct = "Return only the updated error object, do not prompt your response.\n"
@@ -43,12 +43,12 @@ if instruction == 'errorsolve':
         
 
     for file, errors in data.items():
-        print(f"File: {file}")
+        # print(f"File: {file}")
         prompt = basePrompt + instruction + jsonOnly
 
         for error in errors:
             prompt = prompt + str(error)
-            print(f"Error: {error}")
+            # print(f"Error: {error}")
         
 
 
@@ -62,8 +62,8 @@ if instruction == 'errorsolve':
             echo=True,
             stream=False
         )
-
-        print(response)
+        print(response['choices'][0]['text'])
+  
 
         write.append(response)
     with open("Data/convo.json", 'w') as json_file:
