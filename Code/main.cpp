@@ -93,11 +93,11 @@ int main()
                             currLine++; 
                             if(currLine == e.lineNum - 1)
                             {
-                                e.pred = line;
+                                e.previousLine = line;
                             }
                             else if (currLine == e.lineNum +1)
                             {
-                                e.suc = line; 
+                                e.nextLine = line; 
                                 inFS.close(); 
                                 searching = false;
                             }
@@ -169,8 +169,8 @@ int main()
                         {"src", error.src},
                         {"srcResolved", error.srcResolved},
                         {"resDescr", error.resDescr},
-                        {"pred",error.pred},
-                        {"suc",error.suc}
+                        {"previousLine",error.previousLine},
+                        {"nextLine",error.nextLine}
                     }; 
 
                     errorsArray.push_back(errorObj); 
@@ -266,16 +266,16 @@ int main()
 
     };
 
-    runningJobs.push_back(syst->createJob(flowscriptGenerationJob)); 
+    // runningJobs.push_back(syst->createJob(flowscriptGenerationJob)); 
 
 
     // Create the compile Jobs & add them to runningJobs vector
-    // runningJobs.push_back(syst->createJob(compJob1)); 
+    runningJobs.push_back(syst->createJob(compJob1)); 
     // // runningJobs.push_back(syst->createJob(compJob2)); 
     // // runningJobs.push_back(syst->createJob(compJob3)); 
 
     // // keeps track of whether or not to send a rest job
-    // bool needsErrorHandling = false; 
+    bool needsErrorHandling = false; 
 
     // Queue the jobs
     for(int i = 0; i < runningJobs.size(); i++)
@@ -293,36 +293,36 @@ int main()
        }
        else // Compilation failed 
        {    
-            // needsErrorHandling = true; 
-            // // Set unique inputId
-            // std::string inputId = "errorparse"; 
-            // inputId.append(std::to_string(j)); 
-            // // Create errorparse input 
-            // json parse 
-            // {
-            //     {"identifier", "errorparse"},
-            //     {"inputId", inputId},
-            //     {"inputData",res.first},
-            //     {"output",""},
-            //     {"success",""}
-            // };
-            // // Create, queue, & finish errorparse job
-            // Job* p = syst->createJob(parse); 
-            // syst->queueJob(p); 
-            // syst->finishJob(p);
+            needsErrorHandling = true; 
+            // Set unique inputId
+            std::string inputId = "errorparse"; 
+            inputId.append(std::to_string(j)); 
+            // Create errorparse input 
+            json parse 
+            {
+                {"identifier", "errorparse"},
+                {"inputId", inputId},
+                {"inputData",res.first},
+                {"output",""},
+                {"success",""}
+            };
+            // Create, queue, & finish errorparse job
+            Job* p = syst->createJob(parse); 
+            syst->queueJob(p); 
+            syst->finishJob(p);
             std::cout << "We have an issue" << std::endl; 
         }
     }
-    // // if at least one of the compile jobs were unsuccessful 
-    // if(needsErrorHandling)
-    // {   
-    //     // Create, queue, and finish a rest job
-    //     Job* r = syst->createJob(restJob);
-    //     syst->queueJob(r); 
-    //     std::pair<std::string, std::string> res = syst->finishJob(r); 
+    // if at least one of the compile jobs were unsuccessful 
+    if(needsErrorHandling)
+    {   
+        // Create, queue, and finish a rest job
+        Job* r = syst->createJob(restJob);
+        syst->queueJob(r); 
+        std::pair<std::string, std::string> res = syst->finishJob(r); 
 
-    //     std::cout << "\n\n\nRETURNED FROM REST JOB:\n" << res.first << std:: endl; 
-    // }
+        std::cout << "\n\n\nRETURNED FROM REST JOB:\n" << res.first << std:: endl; 
+    }
 
       // json input for custom compile job 
         // job completes with erros & invokes child job    
