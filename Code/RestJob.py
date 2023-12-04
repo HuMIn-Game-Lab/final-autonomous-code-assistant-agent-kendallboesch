@@ -7,11 +7,11 @@ import seaborn as sns
 
 
 
-openai.api_base="http://localhost:4891/v1"
-promptFile = 'errors.json'
+# openai.api_base="http://localhost:4891/v1"
+# promptFile = 'errors.json'
 
-# openai.api_base=sys.argv[1]
-# promptFile = sys.argv[2]
+openai.api_base=sys.argv[1]
+promptFile = sys.argv[2]
 model = "NA"
 openai.api_key = "not needed for a local LLM"
 
