@@ -78,6 +78,37 @@ int main()
                 e.errorMessage.append(matcher[5]); 
                 e.srcResolved = "";
                 e.resDescr="";
+
+                bool searching = true; 
+                while(searching)
+                {
+                    std::ifstream inFS(e.file);
+                    if(inFS.is_open())
+                    {
+                        int currLine = 0; \
+                        std::string line; 
+                        while(getline(inFS,line))
+                        {
+                            currLine++; 
+                            if(currLine == e.lineNum - 1)
+                            {
+                                e.pred = line;
+                            }
+                            else if (currLine == e.lineNum +1)
+                            {
+                                e.suc = line; 
+                                inFS.close(); 
+                                searching = false;
+                            }
+                            
+                        }
+                    }
+                }
+
+                // if(getline(errorStream, e.pred))
+                // {
+                //     if(getline(errorStream, e.suc))
+                //     {
                 getline(errorStream,e.src); 
 
                 auto error_itr = errors.find(e.file); 
@@ -88,9 +119,13 @@ int main()
                 }    
                 error_itr = errors.find(e.file); 
                 error_itr->second.push_back(e); 
+        //     }
+                // }
+              
 
             }
         }
+
         
         bool jsonReadError = false; 
         json toFile = json::object(); 
@@ -132,7 +167,9 @@ int main()
                         {"colNum", error.colNum},
                         {"src", error.src},
                         {"srcResolved", error.srcResolved},
-                        {"resDescr", error.resDescr}
+                        {"resDescr", error.resDescr},
+                        {"pred",error.pred},
+                        {"suc",error.suc}
                     }; 
 
                     errorsArray.push_back(errorObj); 
@@ -221,8 +258,8 @@ int main()
 
     // Create the compile Jobs & add them to runningJobs vector
     runningJobs.push_back(syst->createJob(compJob1)); 
-    runningJobs.push_back(syst->createJob(compJob2)); 
-    runningJobs.push_back(syst->createJob(compJob3)); 
+    // runningJobs.push_back(syst->createJob(compJob2)); 
+    // runningJobs.push_back(syst->createJob(compJob3)); 
 
     // keeps track of whether or not to send a rest job
     bool needsErrorHandling = false; 
@@ -263,15 +300,15 @@ int main()
         }
     }
     // if at least one of the compile jobs were unsuccessful 
-    if(needsErrorHandling)
-    {   
-        // Create, queue, and finish a rest job
-        Job* r = syst->createJob(restJob);
-        syst->queueJob(r); 
-        std::pair<std::string, std::string> res = syst->finishJob(r); 
+    // if(needsErrorHandling)
+    // {   
+    //     // Create, queue, and finish a rest job
+    //     Job* r = syst->createJob(restJob);
+    //     syst->queueJob(r); 
+    //     std::pair<std::string, std::string> res = syst->finishJob(r); 
 
-        std::cout << "\n\n\nRETURNED FROM REST JOB:\n" << res.first << std:: endl; 
-    }
+    //     std::cout << "\n\n\nRETURNED FROM REST JOB:\n" << res.first << std:: endl; 
+    // }
     
     return 0;
 
