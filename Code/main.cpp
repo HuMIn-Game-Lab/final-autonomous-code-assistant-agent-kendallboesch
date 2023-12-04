@@ -300,15 +300,15 @@ int main()
         }
     }
     // if at least one of the compile jobs were unsuccessful 
-    // if(needsErrorHandling)
-    // {   
-    //     // Create, queue, and finish a rest job
-    //     Job* r = syst->createJob(restJob);
-    //     syst->queueJob(r); 
-    //     std::pair<std::string, std::string> res = syst->finishJob(r); 
+    if(needsErrorHandling)
+    {   
+        // Create, queue, and finish a rest job
+        Job* r = syst->createJob(restJob);
+        syst->queueJob(r); 
+        std::pair<std::string, std::string> res = syst->finishJob(r); 
 
-    //     std::cout << "\n\n\nRETURNED FROM REST JOB:\n" << res.first << std:: endl; 
-    // }
+        std::cout << "\n\n\nRETURNED FROM REST JOB:\n" << res.first << std:: endl; 
+    }
     
     return 0;
 
