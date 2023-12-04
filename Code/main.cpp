@@ -4,6 +4,7 @@
 #include <array> 
 #include <fstream> 
 #include <sstream>
+#include "FlowscriptInterpreter.h"
 #include <regex> 
 
 int main() 
@@ -56,7 +57,7 @@ int main()
 
     });
     // register job type 'errorParse'
-    syst->registerJobType("errorParse", [](json& input)
+    syst->registerJobType("errorparse", [](json& input)
     {
         std::regex errorPattern("(.*):(\\d+):(\\d+): (error|warning:)+(.*)");
         std::string unparsedText = input["inputData"]; 
@@ -246,23 +247,35 @@ int main()
      *      - json file of errors to be resolved
      * 
     ********/
+    json flowscriptGenerationJob {
+
+        {"identifier","compile"},
+        {"inputId", "rest1"},
+        {"inputData", "pyrest ARGS=\"flowgen http://localhost:4891/v1 errors.json\""},
+        {"output", ""}, 
+        {"success", ""}
+
+    };
     json restJob {
 
         {"identifier","compile"},
         {"inputId", "rest1"},
-        {"inputData", "pyrest ARGS=\"http://localhost:4891/v1 errors.json\""},
+        {"inputData", "pyrest ARGS=\"errorsolve http://localhost:4891/v1 errors.json\""},
         {"output", ""}, 
         {"success", ""}
 
     };
 
-    // Create the compile Jobs & add them to runningJobs vector
-    runningJobs.push_back(syst->createJob(compJob1)); 
-    // runningJobs.push_back(syst->createJob(compJob2)); 
-    // runningJobs.push_back(syst->createJob(compJob3)); 
+    runningJobs.push_back(syst->createJob(flowscriptGenerationJob)); 
 
-    // keeps track of whether or not to send a rest job
-    bool needsErrorHandling = false; 
+
+    // Create the compile Jobs & add them to runningJobs vector
+    // runningJobs.push_back(syst->createJob(compJob1)); 
+    // // runningJobs.push_back(syst->createJob(compJob2)); 
+    // // runningJobs.push_back(syst->createJob(compJob3)); 
+
+    // // keeps track of whether or not to send a rest job
+    // bool needsErrorHandling = false; 
 
     // Queue the jobs
     for(int i = 0; i < runningJobs.size(); i++)
@@ -280,36 +293,89 @@ int main()
        }
        else // Compilation failed 
        {    
-            needsErrorHandling = true; 
-            // Set unique inputId
-            std::string inputId = "errorparse"; 
-            inputId.append(std::to_string(j)); 
-            // Create errorparse input 
-            json parse 
-            {
-                {"identifier", "errorParse"},
-                {"inputId", inputId},
-                {"inputData",res.first},
-                {"output",""},
-                {"success",""}
-            };
-            // Create, queue, & finish errorparse job
-            Job* p = syst->createJob(parse); 
-            syst->queueJob(p); 
-            syst->finishJob(p);
+            // needsErrorHandling = true; 
+            // // Set unique inputId
+            // std::string inputId = "errorparse"; 
+            // inputId.append(std::to_string(j)); 
+            // // Create errorparse input 
+            // json parse 
+            // {
+            //     {"identifier", "errorparse"},
+            //     {"inputId", inputId},
+            //     {"inputData",res.first},
+            //     {"output",""},
+            //     {"success",""}
+            // };
+            // // Create, queue, & finish errorparse job
+            // Job* p = syst->createJob(parse); 
+            // syst->queueJob(p); 
+            // syst->finishJob(p);
+            std::cout << "We have an issue" << std::endl; 
         }
     }
-    // if at least one of the compile jobs were unsuccessful 
-    if(needsErrorHandling)
-    {   
-        // Create, queue, and finish a rest job
-        Job* r = syst->createJob(restJob);
-        syst->queueJob(r); 
-        std::pair<std::string, std::string> res = syst->finishJob(r); 
+    // // if at least one of the compile jobs were unsuccessful 
+    // if(needsErrorHandling)
+    // {   
+    //     // Create, queue, and finish a rest job
+    //     Job* r = syst->createJob(restJob);
+    //     syst->queueJob(r); 
+    //     std::pair<std::string, std::string> res = syst->finishJob(r); 
 
-        std::cout << "\n\n\nRETURNED FROM REST JOB:\n" << res.first << std:: endl; 
-    }
-    
+    //     std::cout << "\n\n\nRETURNED FROM REST JOB:\n" << res.first << std:: endl; 
+    // }
+
+      // json input for custom compile job 
+        // job completes with erros & invokes child job    
+    // json compError = {
+    //     {"identifier","compile"},
+    //     {"inputId", "comperror"},
+    //     {"inputData", "demoerror"},
+    //     {"output", ""}, 
+    //     {"success", ""}
+    // }; 
+    // json compAuto = {
+    //     {"identifier","compile"},
+    //     {"inputId", "compAuto"},
+    //     {"inputData", "automated"},
+    //     {"output", ""}, 
+    //     {"success", ""}
+    // }; 
+    // //json input for custom compile job 
+    //     // job completes weithout errors -> no child job created 
+    // json compWorking = {
+    //     {"identifier","compile"},
+    //     {"inputId", "compWorking"},
+    //     {"inputData", "demoWorking"},
+    //     {"output", ""}, 
+    //     {"success", ""}
+    // }; 
+    //   json testJob = {
+    //     {"identifier","test"},
+    //     {"inputId", "testJob"},
+    //     {"inputData", "test data 123"},
+    //     {"output", ""}, 
+    //     {"success", ""}
+    // }; 
+
+    // if(syst->loadInput(compError))
+    // {
+    //     std::cout << "Input loaded: " << compError << std::endl; 
+    // }
+    // if(syst->loadInput(compAuto))
+    // {
+    //     std::cout << "Input loaded: " << compAuto << std::endl; 
+    // }
+    // if(syst->loadInput(compWorking))
+    // {
+    //     std::cout << "Input loaded: " << compWorking << std::endl; 
+    // }
+    // if(syst->loadInput(testJob))
+    // {
+    //     std::cout << "Input loaded: " << testJob << std::endl; 
+    // }
+
+    // FlowscriptInterpreter* intrp = new FlowscriptInterpreter(syst); 
+    // intrp->interpret("Code/Flowscript/FunctionCall.md");
     return 0;
 
 }
