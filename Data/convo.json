@@ -1,0 +1,22 @@
+[
+    {
+        "choices": [
+            {
+                "finish_reason": "stop",
+                "index": 0,
+                "logprobs": null,
+                "references": [],
+                "text": "This is the format of an error object:\n {\n{'colNum' : #}, \n {'errorMessage': ''},\n{'file': ''},\n{'lineNum': #},\n{'resDescr': ''},\n{'src': ''},\n{'srcResolved': ''}\n}\n\nFor each error object given, provide the resolved C++ code in the 'srcResolved' member, and provide a description of the fix in the 'resDescr' member.\nReturn only the updated error object, do not prompt your response.\n{'colNum': 40, 'errorMessage': \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 13, 'pred': '{', 'resDescr': '', 'src': '    std::cout << \"in demoerror.cpp\" << endl;', 'srcResolved': '', 'suc': '    return 0'}{'colNum': 13, 'errorMessage': \"error: expected ';' after return statement\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 14, 'pred': '    std::cout << \"in demoerror.cpp\" << endl;', 'resDescr': '', 'src': '    return 0', 'srcResolved': '', 'suc': '}'}\n{'colNum': 40, 'errorMessage': \"\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 13, 'resDescr': \"Use std::endl instead of endl\", 'srcResolved': \"    std::cout << \\\"in demoerror.cpp\\\" << std::endl;\", 'suc': '    return 0'}\n{'colNum': 13, 'errorMessage': \"\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 14, 'resDescr': \"Add a semicolon after the return statement\", 'srcResolved': \"    std::cout << \\\"in demoerror.cpp\\\" << std::endl;\";\", 'suc': '}'}"
+            }
+        ],
+        "created": 1701709256,
+        "id": "foobarbaz",
+        "model": "Mistral Instruct",
+        "object": "text_completion",
+        "usage": {
+            "completion_tokens": 169,
+            "prompt_tokens": 326,
+            "total_tokens": 495
+        }
+    }
+]
