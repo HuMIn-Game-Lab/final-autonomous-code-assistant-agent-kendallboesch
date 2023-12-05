@@ -18,5 +18,525 @@
             "prompt_tokens": 326,
             "total_tokens": 495
         }
+    },
+    {
+        "choices": [
+            {
+                "finish_reason": "stop",
+                "index": 0,
+                "logprobs": null,
+                "references": [],
+                "text": "This is the format of an error object:\n {\n{'colNum' : #}, \n {'errorMessage': ''},\n{'file': ''},\n{'lineNum': #},\n{'resDescr': ''},\n{'src': ''},\n{'srcResolved': ''}\n}\n\nFor each error object given, provide the resolved C++ code in the 'srcResolved' member, and provide a description of the fix in the 'resDescr' member.\nReturn only the updated error object, do not prompt your response.\n{'colNum': 40, 'errorMessage': \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 13, 'pred': '{', 'resDescr': '', 'src': '    std::cout << \"in demoerror.cpp\" << endl;', 'srcResolved': '', 'suc': '    return 0'}{'colNum': 13, 'errorMessage': \"error: expected ';' after return statement\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 14, 'pred': '    std::cout << \"in demoerror.cpp\" << endl;', 'resDescr': '', 'src': '    return 0', 'srcResolved': '', 'suc': '}'}\n{'colNum': 40, 'errorMessage': \"\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 13, 'resDescr': \"Use std::endl instead of endl\", 'srcResolved': \"    std::cout << \\\"in demoerror.cpp\\\" << std::endl;\", 'suc': \"return 0\"}\n{'colNum': 13, 'errorMessage': \"\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 14, 'resDescr': \"Add a semicolon after the return statement\", 'srcResolved': \"    std::cout << \\\"in demoerror.cpp\\\" << std::endl; ;\", 'suc': \"\"}"
+            }
+        ],
+        "created": 1701731217,
+        "id": "foobarbaz",
+        "model": "Mistral Instruct",
+        "object": "text_completion",
+        "usage": {
+            "completion_tokens": 167,
+            "prompt_tokens": 326,
+            "total_tokens": 493
+        }
+    },
+    {
+        "choices": [
+            {
+                "finish_reason": "stop",
+                "index": 0,
+                "logprobs": null,
+                "references": [],
+                "text": "This is the format of an error object:\n {\n{'colNum' : #}, \n {'errorMessage': ''},\n{'file': ''},\n{'lineNum': #},\n{'resDescr': ''},\n{'src': ''},\n{'srcResolved': ''}\n}\n\nFor each error object given, provide the resolved C++ code in the 'srcResolved' member, and provide a description of the fix in the 'resDescr' member.\nReturn only the updated error object, do not prompt your response.\n{'colNum': 40, 'errorMessage': \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 13, 'pred': '{', 'resDescr': '', 'src': '    std::cout << \"in demoerror.cpp\" << endl;', 'srcResolved': '', 'suc': '    return 0'}{'colNum': 13, 'errorMessage': \"error: expected ';' after return statement\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 14, 'pred': '    std::cout << \"in demoerror.cpp\" << endl;', 'resDescr': '', 'src': '    return 0', 'srcResolved': '', 'suc': '}'}\n{'colNum': 40, 'errorMessage': \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 13, 'pred': '{', 'resDescr': \"'std::endl' should be used instead of 'endl'\", 'src': '    std::cout << \"in demoerror.cpp\" << std::endl;', 'srcResolved': '', 'suc': '    return 0'}\n{'colNum': 13, 'errorMessage': \"error: expected ';' after return statement\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 14, 'pred': '    std::cout << \"in demoerror.cpp\" << endl;', 'resDescr': \"'return' should be followed by a semicolon\", 'src': '    return 0;', 'srcResolved': '', 'suc': '}'}"
+            }
+        ],
+        "created": 1701731542,
+        "id": "foobarbaz",
+        "model": "Mistral Instruct",
+        "object": "text_completion",
+        "usage": {
+            "completion_tokens": 226,
+            "prompt_tokens": 326,
+            "total_tokens": 552
+        }
+    },
+    {
+        "choices": [
+            {
+                "finish_reason": "stop",
+                "index": 0,
+                "logprobs": null,
+                "references": [],
+                "text": "This is the format of an error object:\n {\n{'colNum' : #}, \n {'errorMessage': ''},\n{'file': ''},\n{'lineNum': #},\n{'resDescr': ''},\n{'src': ''},\n{'srcResolved': ''}\n}\n\nFor each error object given, provide the resolved C++ code in the 'srcResolved' member, and provide a description of the fix in the 'resDescr' member.\nReturn only the updated error object, do not prompt your response.\n{'colNum': 40, 'errorMessage': \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 13, 'pred': '{', 'resDescr': '', 'src': '    std::cout << \"in demoerror.cpp\" << endl;', 'srcResolved': '', 'suc': '    return 0'}{'colNum': 13, 'errorMessage': \"error: expected ';' after return statement\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 14, 'pred': '    std::cout << \"in demoerror.cpp\" << endl;', 'resDescr': '', 'src': '    return 0', 'srcResolved': '', 'suc': '}'}\n{'colNum': 40, 'errorMessage': \"\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 13, 'resDescr': \"Use std::endl instead of endl\", 'srcResolved': \"    std::cout << \\\"in demoerror.cpp\\\" << std::endl;\", 'suc': \"\"}{'colNum': 13, 'errorMessage': \"\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 14, 'resDescr': \"Add a semicolon after return statement\", 'srcResolved': \"    std::cout << \\\"in demoerror.cpp\\\" << endl;\", 'suc': \"\"}"
+            }
+        ],
+        "created": 1701731956,
+        "id": "foobarbaz",
+        "model": "Mistral Instruct",
+        "object": "text_completion",
+        "usage": {
+            "completion_tokens": 159,
+            "prompt_tokens": 326,
+            "total_tokens": 485
+        }
+    },
+    {
+        "choices": [
+            {
+                "finish_reason": "stop",
+                "index": 0,
+                "logprobs": null,
+                "references": [],
+                "text": "This is the format of an error object:\n {\n{'colNum' : #}, \n {'errorMessage': ''},\n{'file': ''},\n{'lineNum': #},\n{'resDescr': ''},\n{'src': ''},\n{'srcResolved': ''}\n}\n\nFor each error object given, provide the resolved C++ code in the 'srcResolved' member, and provide a description of the fix in the 'resDescr' member.\nReturn only the updated error object, do not prompt your response.\n{'colNum': 40, 'errorMessage': \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 13, 'nextLine': '    return 0', 'previousLine': '{', 'resDescr': '', 'src': '    std::cout << \"in demoerror.cpp\" << endl;', 'srcResolved': ''}{'colNum': 13, 'errorMessage': \"error: expected ';' after return statement\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 14, 'nextLine': '}', 'previousLine': '    std::cout << \"in demoerror.cpp\" << endl;', 'resDescr': '', 'src': '    return 0', 'srcResolved': ''}\n{'colNum': 40, 'errorMessage': \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 13, 'nextLine': '    return 0', 'previousLine': '{', 'resDescr': \"Replace the use of endl with std::endl.\", 'srcResolved': \"{    std::cout << \\\"in demoerror.cpp\\\" << std::endl;}\", 'src': ''}{'colNum': 13, 'errorMessage': \"error: expected ';' after return statement\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 14, 'nextLine': '', 'previousLine': '    std::cout << \"in demoerror.cpp\" << endl;', 'resDescr': \"\", 'srcResolved': \"{    return 0;}\", 'src': ''}"
+            }
+        ],
+        "created": 1701732050,
+        "id": "foobarbaz",
+        "model": "Mistral Instruct",
+        "object": "text_completion",
+        "usage": {
+            "completion_tokens": 214,
+            "prompt_tokens": 328,
+            "total_tokens": 542
+        }
+    },
+    {
+        "choices": [
+            {
+                "finish_reason": "stop",
+                "index": 0,
+                "logprobs": null,
+                "references": [],
+                "text": "This is the format of an error object:\n {\n{'colNum' : #}, \n {'errorMessage': ''},\n{'file': ''},\n{'lineNum': #},\n{'resDescr': ''},\n{'src': ''},\n{'srcResolved': ''}\n}\n\nFor each error object given, provide the resolved C++ code in the 'srcResolved' member, and provide a description of the fix in the 'resDescr' member.\nReturn only the updated error object, do not prompt your response.\n{'colNum': 40, 'errorMessage': \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 13, 'nextLine': '    return 0', 'previousLine': '{', 'resDescr': '', 'src': '    std::cout << \"in demoerror.cpp\" << endl;', 'srcResolved': ''}{'colNum': 13, 'errorMessage': \"error: expected ';' after return statement\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 14, 'nextLine': '}', 'previousLine': '    std::cout << \"in demoerror.cpp\" << endl;', 'resDescr': '', 'src': '    return 0', 'srcResolved': ''}\n{'colNum': 40, 'errorMessage': \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 13, 'nextLine': '    return 0', 'previousLine': '{', 'resDescr': \"Replace all instances of 'endl' with 'std::endl'\", 'srcResolved': '    std::cout << \"in demoerror.cpp\" << std::endl;'}\n{'colNum': 13, 'errorMessage': \"error: expected ';' after return statement\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 14, 'nextLine': '', 'previousLine': '    std::cout << \"in demoerror.cpp\" << std::endl;', 'resDescr': \"Add a semicolon after the return statement\", 'srcResolved': '    return 0;'}"
+            }
+        ],
+        "created": 1701732198,
+        "id": "foobarbaz",
+        "model": "Mistral Instruct",
+        "object": "text_completion",
+        "usage": {
+            "completion_tokens": 220,
+            "prompt_tokens": 328,
+            "total_tokens": 548
+        }
+    },
+    {
+        "choices": [
+            {
+                "finish_reason": "stop",
+                "index": 0,
+                "logprobs": null,
+                "references": [],
+                "text": "This is the format of an error object:\n {\n{'colNum' : #}, \n {'errorMessage': ''},\n{'file': ''},\n{'lineNum': #},\n{'resDescr': ''},\n{'src': ''},\n{'srcResolved': ''}\n}\n\nFor each error object given, provide the resolved C++ code in the 'srcResolved' member, and provide a description of the fix in the 'resDescr' member.\nReturn only the updated error object, do not prompt your response.\n{'colNum': 40, 'errorMessage': \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 13, 'nextLine': '    return 0', 'previousLine': '{', 'resDescr': '', 'src': '    std::cout << \"in demoerror.cpp\" << endl;', 'srcResolved': ''}{'colNum': 13, 'errorMessage': \"error: expected ';' after return statement\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 14, 'nextLine': '}', 'previousLine': '    std::cout << \"in demoerror.cpp\" << endl;', 'resDescr': '', 'src': '    return 0', 'srcResolved': ''}\n{'colNum': 40, 'errorMessage': \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 13, 'nextLine': '    return 0', 'previousLine': '{', 'resDescr': \"Replace 'endl' with 'std::endl'\", 'srcResolved': '    std::cout << \"in demoerror.cpp\" << std::endl;'}\n{'colNum': 13, 'errorMessage': \"error: expected ';' after return statement\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 14, 'nextLine': '', 'previousLine': '    std::cout << \"in demoerror.cpp\" << endl;', 'resDescr': \"Add a semicolon after the return statement\", 'srcResolved': '    return 0;'}"
+            }
+        ],
+        "created": 1701732864,
+        "id": "foobarbaz",
+        "model": "Mistral Instruct",
+        "object": "text_completion",
+        "usage": {
+            "completion_tokens": 215,
+            "prompt_tokens": 328,
+            "total_tokens": 543
+        }
+    },
+    {
+        "choices": [
+            {
+                "finish_reason": "stop",
+                "index": 0,
+                "logprobs": null,
+                "references": [],
+                "text": "This is the format of an error object:\n {\n{'colNum' : #}, \n {'errorMessage': ''},\n{'file': ''},\n{'lineNum': #},\n{'resDescr': ''},\n{'src': ''},\n{'srcResolved': ''}\n}\n\nFor each error object given, provide the resolved C++ code in the 'srcResolved' member, and provide a description of the fix in the 'resDescr' member.\nReturn only the updated error object, do not prompt your response.\n{'colNum': 40, 'errorMessage': \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 13, 'nextLine': '    return 0', 'previousLine': '{', 'resDescr': '', 'src': '    std::cout << \"in demoerror.cpp\" << endl;', 'srcResolved': ''}{'colNum': 13, 'errorMessage': \"error: expected ';' after return statement\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 14, 'nextLine': '}', 'previousLine': '    std::cout << \"in demoerror.cpp\" << endl;', 'resDescr': '', 'src': '    return 0', 'srcResolved': ''}\n{\n'colNum': 40,\n'errorMessage': \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\",\n'file': 'Code/toCompile/demoerror.cpp',\n'lineNum': 13,\n'nextLine': '    return 0',\n'previousLine': '{',\n'resDescr': \"Use the correct syntax for cout statement.\",\n'srcResolved': \"{std::cout << \\\"in demoerror.cpp\\\" << std::endl;}\",\n'src': \"\"\n}"
+            }
+        ],
+        "created": 1701744999,
+        "id": "foobarbaz",
+        "model": "Mistral Instruct",
+        "object": "text_completion",
+        "usage": {
+            "completion_tokens": 127,
+            "prompt_tokens": 328,
+            "total_tokens": 455
+        }
+    },
+    {
+        "choices": [
+            {
+                "finish_reason": "stop",
+                "index": 0,
+                "logprobs": null,
+                "references": [],
+                "text": "This is the format of an error object:\n {\n{'colNum' : #}, \n {'errorMessage': ''},\n{'file': ''},\n{'lineNum': #},\n{'resDescr': ''},\n{'src': ''},\n{'srcResolved': ''}\n}\n\nFor each error object given, provide the resolved C++ code in the 'srcResolved' member, and provide a description of the fix in the 'resDescr' member.\nReturn only the updated error object, do not prompt your response.\n{'colNum': 40, 'errorMessage': \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 13, 'nextLine': '    return 0', 'previousLine': '{', 'resDescr': '', 'src': '    std::cout << \"in demoerror.cpp\" << endl;', 'srcResolved': ''}{'colNum': 13, 'errorMessage': \"error: expected ';' after return statement\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 14, 'nextLine': '}', 'previousLine': '    std::cout << \"in demoerror.cpp\" << endl;', 'resDescr': '', 'src': '    return 0', 'srcResolved': ''}\n{'colNum' : 13, \n{'errorMessage': \"error: expected ';' after return statement\", \n{'file': 'Code/toCompile/demoerror.cpp', \n'lineNum': 14, \n'nextLine': '', \n'previousLine': '    std::cout << \"in demoerror.cpp\" << endl;', \n'resDescr': \"Add a semicolon after the return statement\", \n'srcResolved': '    return 0;'}"
+            }
+        ],
+        "created": 1701747892,
+        "id": "foobarbaz",
+        "model": "Mistral Instruct",
+        "object": "text_completion",
+        "usage": {
+            "completion_tokens": 115,
+            "prompt_tokens": 328,
+            "total_tokens": 443
+        }
+    },
+    {
+        "choices": [
+            {
+                "finish_reason": "stop",
+                "index": 0,
+                "logprobs": null,
+                "references": [],
+                "text": "This is the format of an error object:\n {\n{'colNum' : #}, \n {'errorMessage': ''},\n{'file': ''},\n{'lineNum': #},\n{'nextLine':''},\n{'previousLine':''},\n{'resDescr': ''},\n{'src': ''},\n{'srcResolved': ''}\n}\n\nFor each error object given, provide the resolved C++ code in the 'srcResolved' member, and provide a description of the fix in the 'resDescr' member. Leave the incorrect code in the 'src' member.\nYour response should be in json format and have an entry for each file, with a nested list of the updated error objects. Return only the json do not prompt your response.\n{'colNum': 40, 'errorMessage': \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 13, 'nextLine': '    return 0', 'previousLine': '{', 'resDescr': '', 'src': '    std::cout << \"in demoerror.cpp\" << endl;', 'srcResolved': ''}{'colNum': 13, 'errorMessage': \"error: expected ';' after return statement\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 14, 'nextLine': '}', 'previousLine': '    std::cout << \"in demoerror.cpp\" << endl;', 'resDescr': '', 'src': '    return 0', 'srcResolved': ''}\n{\n\"Code/toCompile/demoerror.cpp\": [\n{\n\"colNum\": 40,\n\"errorMessage\": \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\",\n\"file\": \"Code/toCompile/demoerror.cpp\",\n\"lineNum\": 13,\n\"nextLine\": \"    return 0\",\n\"previousLine\": \"{\",\n\"resDescr\": \"\",\n\"srcResolved\": \"\"\n},\n{\n\"colNum\": 13,\n\"errorMessage\": \"error: expected ';' after return statement\",\n\"file\": \"Code/toCompile/demoerror.cpp\",\n\"lineNum\": 14,\n\"nextLine\": \"\",\n\"previousLine\": \"    std::cout << \\\"in demoerror.cpp\\\" << endl;\",\n\"resDescr\": \"\",\n\"srcResolved\": \"\"\n}\n]\n}"
+            }
+        ],
+        "created": 1701748114,
+        "id": "foobarbaz",
+        "model": "Mistral Instruct",
+        "object": "text_completion",
+        "usage": {
+            "completion_tokens": 213,
+            "prompt_tokens": 375,
+            "total_tokens": 588
+        }
+    },
+    {
+        "choices": [
+            {
+                "finish_reason": "stop",
+                "index": 0,
+                "logprobs": null,
+                "references": [],
+                "text": "This is the format of an error object:\n {\n{'colNum' : #}, \n {'errorMessage': ''},\n{'file': ''},\n{'lineNum': #},\n{'nextLine':''},\n{'previousLine':''},\n{'resDescr': ''},\n{'src': ''},\n{'srcResolved': ''}\n}\n\nFor each error object given, provide the resolved C++ code in the 'srcResolved' member, and provide a description of the fix in the 'resDescr' member. Leave the incorrect code in the 'src' member.\nYour response should be in json format and have an entry for each file, with a nested list of the updated error objects. Return only the updated json do not prompt your response.\n{'colNum': 40, 'errorMessage': \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 13, 'nextLine': '    return 0', 'previousLine': '{', 'resDescr': '', 'src': '    std::cout << \"in demoerror.cpp\" << endl;', 'srcResolved': ''}{'colNum': 13, 'errorMessage': \"error: expected ';' after return statement\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 14, 'nextLine': '}', 'previousLine': '    std::cout << \"in demoerror.cpp\" << endl;', 'resDescr': '', 'src': '    return 0', 'srcResolved': ''}\n```json\n[\n  {\n    \"colNum\": 40,\n    \"errorMessage\": \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\",\n    \"file\": \"Code/toCompile/demoerror.cpp\",\n    \"lineNum\": 13,\n    \"nextLine\": \"    return 0\",\n    \"previousLine\": \"{\",\n    \"resDescr\": \"\",\n    \"srcResolved\": \"\"\n  },\n  {\n    \"colNum\": 13,\n    \"errorMessage\": \"error: expected ';' after return statement\",\n    \"file\": \"Code/toCompile/demoerror.cpp\",\n    \"lineNum\": 14,\n    \"nextLine\": \"\",\n    \"previousLine\": \"    std::cout << \\\"in demoerror.cpp\\\" << endl;\",\n    \"resDescr\": \"\",\n    \"srcResolved\": \"\"\n  }\n]\n```"
+            }
+        ],
+        "created": 1701748311,
+        "id": "foobarbaz",
+        "model": "Mistral Instruct",
+        "object": "text_completion",
+        "usage": {
+            "completion_tokens": 223,
+            "prompt_tokens": 376,
+            "total_tokens": 599
+        }
+    },
+    {
+        "choices": [
+            {
+                "finish_reason": "stop",
+                "index": 0,
+                "logprobs": null,
+                "references": [],
+                "text": "This is the format of an error object:\n {\n{'colNum' : #}, \n {'errorMessage': ''},\n{'file': ''},\n{'lineNum': #},\n{'nextLine':''},\n{'previousLine':''},\n{'resDescr': ''},\n{'src': ''},\n{'srcResolved': ''}\n}\n\nFor each error object given, provide the resolved C++ code in the 'srcResolved' member, and provide a description of the fix in the 'resDescr' member. Leave the incorrect code in the 'src' member.\nYour response should be in json format and have an entry for each file, with a nested list of the updated error objects. Return only the updated json do not prompt your response.\n{'colNum': 40, 'errorMessage': \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 13, 'nextLine': '    return 0', 'previousLine': '{', 'resDescr': '', 'src': '    std::cout << \"in demoerror.cpp\" << endl;', 'srcResolved': ''}{'colNum': 13, 'errorMessage': \"error: expected ';' after return statement\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 14, 'nextLine': '}', 'previousLine': '    std::cout << \"in demoerror.cpp\" << endl;', 'resDescr': '', 'src': '    return 0', 'srcResolved': ''}\n{\n\"Code/toCompile/demoerror.cpp\": [\n{\n\"colNum\": 40,\n\"errorMessage\": \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\",\n\"file\": \"Code/toCompile/demoerror.cpp\",\n\"lineNum\": 13,\n\"nextLine\": \"    return 0\",\n\"previousLine\": \"{\",\n\"resDescr\": \"\",\n\"srcResolved\": \"\"\n},\n{\n\"colNum\": 13,\n\"errorMessage\": \"error: expected ';' after return statement\",\n\"file\": \"Code/toCompile/demoerror.cpp\",\n\"lineNum\": 14,\n\"nextLine\": \"\",\n\"previousLine\": \"    std::cout << \\\"in demoerror.cpp\\\" << endl;\",\n\"resDescr\": \"\",\n\"srcResolved\": \"\"\n}\n]\n}"
+            }
+        ],
+        "created": 1701748681,
+        "id": "foobarbaz",
+        "model": "Mistral Instruct",
+        "object": "text_completion",
+        "usage": {
+            "completion_tokens": 213,
+            "prompt_tokens": 376,
+            "total_tokens": 589
+        }
+    },
+    {
+        "choices": [
+            {
+                "finish_reason": "stop",
+                "index": 0,
+                "logprobs": null,
+                "references": [],
+                "text": "This is the format of an error object:\n {\n{'colNum' : #}, \n {'errorMessage': ''},\n{'file': ''},\n{'lineNum': #},\n{'nextLine':''},\n{'previousLine':''},\n{'resDescr': ''},\n{'src': ''},\n{'srcResolved': ''}\n}\n\nFor each error object given, provide the resolved C++ code in the 'srcResolved' member, and provide a description of the fix in the 'resDescr' member. Leave the incorrect code in the 'src' member.\nYour response should be in json format and have an entry for each file, with a nested list of the updated error objects. Return only the updated json do not prompt your response.\n{'colNum': 40, 'errorMessage': \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 13, 'nextLine': '    return 0', 'previousLine': '{', 'resDescr': '', 'src': '    std::cout << \"in demoerror.cpp\" << endl;', 'srcResolved': ''}{'colNum': 13, 'errorMessage': \"error: expected ';' after return statement\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 14, 'nextLine': '}', 'previousLine': '    std::cout << \"in demoerror.cpp\" << endl;', 'resDescr': '', 'src': '    return 0', 'srcResolved': ''}\n{\n\"Code/toCompile/demoerror.cpp\": [\n{\n\"colNum\": 40,\n\"errorMessage\": \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\",\n\"file\": \"Code/toCompile/demoerror.cpp\",\n\"lineNum\": 13,\n\"nextLine\": \"    return 0\",\n\"previousLine\": \"{\",\n\"resDescr\": \"\",\n\"srcResolved\": \"\"\n},\n{\n\"colNum\": 13,\n\"errorMessage\": \"error: expected ';' after return statement\",\n\"file\": \"Code/toCompile/demoerror.cpp\",\n\"lineNum\": 14,\n\"nextLine\": \"\",\n\"previousLine\": \"    std::cout << \\\"in demoerror.cpp\\\" << endl;\",\n\"resDescr\": \"\",\n\"srcResolved\": \"\"\n}\n]\n}"
+            }
+        ],
+        "created": 1701748912,
+        "id": "foobarbaz",
+        "model": "Mistral Instruct",
+        "object": "text_completion",
+        "usage": {
+            "completion_tokens": 213,
+            "prompt_tokens": 376,
+            "total_tokens": 589
+        }
+    },
+    {
+        "choices": [
+            {
+                "finish_reason": "stop",
+                "index": 0,
+                "logprobs": null,
+                "references": [],
+                "text": "This is the format of an error object:\n {\n{'colNum' : #}, \n {'errorMessage': ''},\n{'file': ''},\n{'lineNum': #},\n{'nextLine':''},\n{'previousLine':''},\n{'resDescr': ''},\n{'src': ''},\n{'srcResolved': ''}\n}\n\nFor each error object given, provide the resolved C++ code in the 'srcResolved' member, and provide a description of the fix in the 'resDescr' member. Leave the incorrect code in the 'src' member.\nYour response should be in json format and have an entry for each file, with a nested list of the updated error objects. Return only the updated json do not prompt your response.\n{'colNum': 40, 'errorMessage': \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 13, 'nextLine': '    return 0', 'previousLine': '{', 'resDescr': '', 'src': '    std::cout << \"in demoerror.cpp\" << endl;', 'srcResolved': ''}{'colNum': 13, 'errorMessage': \"error: expected ';' after return statement\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 14, 'nextLine': '}', 'previousLine': '    std::cout << \"in demoerror.cpp\" << endl;', 'resDescr': '', 'src': '    return 0', 'srcResolved': ''}\n{\n\"Code/toCompile/demoerror.cpp\": [\n{\n\"colNum\": 40,\n\"errorMessage\": \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\",\n\"file\": \"Code/toCompile/demoerror.cpp\",\n\"lineNum\": 13,\n\"nextLine\": \"    return 0\",\n\"previousLine\": \"{\",\n\"resDescr\": \"\",\n\"srcResolved\": \"\"\n},\n{\n\"colNum\": 13,\n\"errorMessage\": \"error: expected ';' after return statement\",\n\"file\": \"Code/toCompile/demoerror.cpp\",\n\"lineNum\": 14,\n\"nextLine\": \"\",\n\"previousLine\": \"    std::cout << \\\"in demoerror.cpp\\\" << endl;\",\n\"resDescr\": \"\",\n\"srcResolved\": \"\"\n}\n]\n}"
+            }
+        ],
+        "created": 1701749217,
+        "id": "foobarbaz",
+        "model": "Mistral Instruct",
+        "object": "text_completion",
+        "usage": {
+            "completion_tokens": 213,
+            "prompt_tokens": 376,
+            "total_tokens": 589
+        }
+    },
+    {
+        "choices": [
+            {
+                "finish_reason": "stop",
+                "index": 0,
+                "logprobs": null,
+                "references": [],
+                "text": "This is the format of an error object:\n {\n{'colNum' : #}, \n {'errorMessage': ''},\n{'file': ''},\n{'lineNum': #},\n{'nextLine':''},\n{'previousLine':''},\n{'resDescr': ''},\n{'src': ''},\n{'srcResolved': ''}\n}\n\nFor each error object given, provide the resolved C++ code in the 'srcResolved' member, and provide a description of the fix in the 'resDescr' member. Leave the incorrect code in the 'src' member.\nYour response should be in json format and have an entry for each file, with a nested list of the updated error objects. Return only the updated json do not prompt your response.\n{'colNum': 40, 'errorMessage': \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 13, 'nextLine': '    return 0', 'previousLine': '{', 'resDescr': '', 'src': '    std::cout << \"in demoerror.cpp\" << endl;', 'srcResolved': ''}{'colNum': 13, 'errorMessage': \"error: expected ';' after return statement\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 14, 'nextLine': '}', 'previousLine': '    std::cout << \"in demoerror.cpp\" << endl;', 'resDescr': '', 'src': '    return 0', 'srcResolved': ''}\n{\n\"Code/toCompile/demoerror.cpp\": [\n{\n\"colNum\": 40,\n\"errorMessage\": \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\",\n\"file\": \"Code/toCompile/demoerror.cpp\",\n\"lineNum\": 13,\n\"nextLine\": \"    return 0\",\n\"previousLine\": \"{\",\n\"resDescr\": \"\",\n\"srcResolved\": \"\"\n},\n{\n\"colNum\": 13,\n\"errorMessage\": \"error: expected ';' after return statement\",\n\"file\": \"Code/toCompile/demoerror.cpp\",\n\"lineNum\": 14,\n\"nextLine\": \"\",\n\"previousLine\": \"    std::cout << \\\"in demoerror.cpp\\\" << endl;\",\n\"resDescr\": \"\",\n\"srcResolved\": \"\"\n}\n]\n}"
+            }
+        ],
+        "created": 1701749378,
+        "id": "foobarbaz",
+        "model": "Mistral Instruct",
+        "object": "text_completion",
+        "usage": {
+            "completion_tokens": 213,
+            "prompt_tokens": 376,
+            "total_tokens": 589
+        }
+    },
+    {
+        "choices": [
+            {
+                "finish_reason": "stop",
+                "index": 0,
+                "logprobs": null,
+                "references": [],
+                "text": "This is the format of an error object:\n {\n{'colNum' : #}, \n {'errorMessage': ''},\n{'file': ''},\n{'lineNum': #},\n{'nextLine':''},\n{'previousLine':''},\n{'resDescr': ''},\n{'src': ''},\n{'srcResolved': ''}\n}\n\nFor each error object given, provide the resolved C++ code in the 'srcResolved' member, and provide a description of the fix in the 'resDescr' member. Leave the incorrect code in the 'src' member.\nYour response should be in json format and have an entry for each file, with a nested list of the updated error objects. Return only the updated json do not prompt your response.\n{'colNum': 40, 'errorMessage': \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 13, 'nextLine': '    return 0', 'previousLine': '{', 'resDescr': '', 'src': '    std::cout << \"in demoerror.cpp\" << endl;', 'srcResolved': ''}{'colNum': 13, 'errorMessage': \"error: expected ';' after return statement\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 14, 'nextLine': '}', 'previousLine': '    std::cout << \"in demoerror.cpp\" << endl;', 'resDescr': '', 'src': '    return 0', 'srcResolved': ''}\n{\n\"Code/toCompile/demoerror.cpp\": [\n{\n\"colNum\": 40,\n\"errorMessage\": \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\",\n\"file\": \"Code/toCompile/demoerror.cpp\",\n\"lineNum\": 13,\n\"nextLine\": \"    return 0\",\n\"previousLine\": \"{\",\n\"resDescr\": \"\",\n\"srcResolved\": \"\"\n},\n{\n\"colNum\": 13,\n\"errorMessage\": \"error: expected ';' after return statement\",\n\"file\": \"Code/toCompile/demoerror.cpp\",\n\"lineNum\": 14,\n\"nextLine\": \"\",\n\"previousLine\": \"    std::cout << \\\"in demoerror.cpp\\\" << endl;\",\n\"resDescr\": \"\",\n\"srcResolved\": \"\"\n}\n]\n}"
+            }
+        ],
+        "created": 1701751641,
+        "id": "foobarbaz",
+        "model": "Mistral Instruct",
+        "object": "text_completion",
+        "usage": {
+            "completion_tokens": 213,
+            "prompt_tokens": 376,
+            "total_tokens": 589
+        }
+    },
+    {
+        "choices": [
+            {
+                "finish_reason": "stop",
+                "index": 0,
+                "logprobs": null,
+                "references": [],
+                "text": "This is the format of an error object:\n {\n{'colNum' : #}, \n {'errorMessage': ''},\n{'file': ''},\n{'lineNum': #},\n{'nextLine':''},\n{'previousLine':''},\n{'resDescr': ''},\n{'src': ''},\n{'srcResolved': ''}\n}\n\nFor each error object given, provide the resolved C++ code in the 'srcResolved' member, and provide a description of the fix in the 'resDescr' member. Leave the incorrect code in the 'src' member.\nYour response should be in json format and have an entry for each file, with a nested list of the updated error objects. Return only the updated json do not prompt your response.\n{'colNum': 40, 'errorMessage': \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 13, 'nextLine': '    return 0', 'previousLine': '{', 'resDescr': '', 'src': '    std::cout << \"in demoerror.cpp\" << endl;', 'srcResolved': ''}{'colNum': 13, 'errorMessage': \"error: expected ';' after return statement\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 14, 'nextLine': '}', 'previousLine': '    std::cout << \"in demoerror.cpp\" << endl;', 'resDescr': '', 'src': '    return 0', 'srcResolved': ''}\n{\n\"Code/toCompile/demoerror.cpp\": [\n{\n\"colNum\": 40,\n\"errorMessage\": \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\",\n\"file\": \"Code/toCompile/demoerror.cpp\",\n\"lineNum\": 13,\n\"nextLine\": \"    return 0\",\n\"previousLine\": \"{\",\n\"resDescr\": \"\",\n\"srcResolved\": \"\"\n},\n{\n\"colNum\": 13,\n\"errorMessage\": \"error: expected ';' after return statement\",\n\"file\": \"Code/toCompile/demoerror.cpp\",\n\"lineNum\": 14,\n\"nextLine\": \"\",\n\"previousLine\": \"    std::cout << \\\"in demoerror.cpp\\\" << endl;\",\n\"resDescr\": \"\",\n\"srcResolved\": \"\"\n}\n]\n}"
+            }
+        ],
+        "created": 1701751794,
+        "id": "foobarbaz",
+        "model": "Mistral Instruct",
+        "object": "text_completion",
+        "usage": {
+            "completion_tokens": 213,
+            "prompt_tokens": 376,
+            "total_tokens": 589
+        }
+    },
+    {
+        "choices": [
+            {
+                "finish_reason": "stop",
+                "index": 0,
+                "logprobs": null,
+                "references": [],
+                "text": "This is the format of an error object:\n {\n{'colNum' : #}, \n {'errorMessage': ''},\n{'file': ''},\n{'lineNum': #},\n{'nextLine':''},\n{'previousLine':''},\n{'resDescr': ''},\n{'src': ''},\n{'srcResolved': ''}\n}\n\nFor each error object given, provide the resolved C++ code in the 'srcResolved' member, and provide a description of the fix in the 'resDescr' member.\n{'colNum': 40, 'errorMessage': \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 13, 'nextLine': '    return 0', 'previousLine': '{', 'resDescr': '', 'src': '    std::cout << \"in demoerror.cpp\" << endl;', 'srcResolved': ''}{'colNum': 13, 'errorMessage': \"error: expected ';' after return statement\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 14, 'nextLine': '}', 'previousLine': '    std::cout << \"in demoerror.cpp\" << endl;', 'resDescr': '', 'src': '    return 0', 'srcResolved': ''}\nFor the first error object:\n{'colNum' : 40, 'errorMessage': \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 13, 'nextLine': '    return 0', 'previousLine': '{', 'resDescr': '', 'src': '    std::cout << \"in demoerror.cpp\" << endl;', 'srcResolved': ''}\nThe resolved C++ code in the 'srcResolved' member would be:\n{'colNum' : 40, 'errorMessage': \"\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 13, 'nextLine': '    return 0', 'previousLine': '{', 'resDescr': \"Use std::endl instead of endl\", 'srcResolved': ''}{'colNum': 40, 'errorMessage': \"\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 13, 'nextLine': '    return 0', 'previousLine': '{', 'resDescr': \"Use std::endl instead of endl\", 'srcResolved': ''}\nThe fix for this error is to replace the use of 'endl' with 'std::endl'. This ensures that the code compiles correctly and avoids any potential issues caused by using an undeclared identifier."
+            }
+        ],
+        "created": 1701752265,
+        "id": "foobarbaz",
+        "model": "Mistral Instruct",
+        "object": "text_completion",
+        "usage": {
+            "completion_tokens": 325,
+            "prompt_tokens": 328,
+            "total_tokens": 653
+        }
+    },
+    {
+        "choices": [
+            {
+                "finish_reason": "stop",
+                "index": 0,
+                "logprobs": null,
+                "references": [],
+                "text": "This is the format of an error object:\n {\n{'colNum' : #}, \n {'errorMessage': ''},\n{'file': ''},\n{'lineNum': #},\n{'nextLine':''},\n{'previousLine':''},\n{'resDescr': ''},\n{'src': ''},\n{'srcResolved': ''}\n}\n\nFor each error object given, provide the resolved C++ code in the 'srcResolved' member, and provide a description of the fix in the 'resDescr' member.\nYour response should be in json format and have an entry for each file, with a nested list of the updated error objects. Return only the updated json do not prompt your response.\n{'colNum': 40, 'errorMessage': \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 13, 'nextLine': '    return 0', 'previousLine': '{', 'resDescr': '', 'src': '    std::cout << \"in demoerror.cpp\" << endl;', 'srcResolved': ''}{'colNum': 13, 'errorMessage': \"error: expected ';' after return statement\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 14, 'nextLine': '}', 'previousLine': '    std::cout << \"in demoerror.cpp\" << endl;', 'resDescr': '', 'src': '    return 0', 'srcResolved': ''}\n{\n\"Code/toCompile/demoerror.cpp\": [\n{\n\"colNum\": 40,\n\"errorMessage\": \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\",\n\"file\": \"Code/toCompile/demoerror.cpp\",\n\"lineNum\": 13,\n\"nextLine\": \"    return 0\",\n\"previousLine\": \"{\",\n\"resDescr\": \"\",\n\"src\": \"    std::cout << \\\"in demoerror.cpp\\\" << std::endl;\",\n\"srcResolved\": \"\"\n},\n{\n\"colNum\": 13,\n\"errorMessage\": \"error: expected ';' after return statement\",\n\"file\": \"Code/toCompile/demoerror.cpp\",\n\"lineNum\": 14,\n\"nextLine\": \"\",\n\"previousLine\": \"    std::cout << \\\"in demoerror.cpp\\\" << std::endl;\",\n\"resDescr\": \"\",\n\"src\": \"    return 0;\",\n\"srcResolved\": \"\"\n}\n]\n}"
+            }
+        ],
+        "created": 1701752298,
+        "id": "foobarbaz",
+        "model": "Mistral Instruct",
+        "object": "text_completion",
+        "usage": {
+            "completion_tokens": 249,
+            "prompt_tokens": 365,
+            "total_tokens": 614
+        }
+    },
+    {
+        "choices": [
+            {
+                "finish_reason": "stop",
+                "index": 0,
+                "logprobs": null,
+                "references": [],
+                "text": "This is the format of an error object:\n {\n{'colNum' : #}, \n {'errorMessage': ''},\n{'file': ''},\n{'lineNum': #},\n{'nextLine':''},\n{'previousLine':''},\n{'resDescr': ''},\n{'src': ''},\n{'srcResolved': ''}\n}\n\nFor each error object given, provide the resolved C++ code in the 'srcResolved' member, and provide a description of the fix in the 'resDescr' member.\n Leave the incorrect code in the 'src' member.\nYour response should be in json format and have an entry for each file, with a nested list of the updated error objects. Return only the updated json do not prompt your response.\n{'colNum': 40, 'errorMessage': \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 13, 'nextLine': '    return 0', 'previousLine': '{', 'resDescr': '', 'src': '    std::cout << \"in demoerror.cpp\" << endl;', 'srcResolved': ''}{'colNum': 13, 'errorMessage': \"error: expected ';' after return statement\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 14, 'nextLine': '}', 'previousLine': '    std::cout << \"in demoerror.cpp\" << endl;', 'resDescr': '', 'src': '    return 0', 'srcResolved': ''}\n{\n\"Code/toCompile/demoerror.cpp\": [\n{\n\"colNum\": 40,\n\"errorMessage\": \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\",\n\"file\": \"Code/toCompile/demoerror.cpp\",\n\"lineNum\": 13,\n\"nextLine\": \"    return 0\",\n\"previousLine\": \"{\",\n\"resDescr\": \"\",\n\"srcResolved\": \"\"\n},\n{\n\"colNum\": 13,\n\"errorMessage\": \"error: expected ';' after return statement\",\n\"file\": \"Code/toCompile/demoerror.cpp\",\n\"lineNum\": 14,\n\"nextLine\": \"\",\n\"previousLine\": \"    std::cout << \\\"in demoerror.cpp\\\" << endl;\",\n\"resDescr\": \"\",\n\"srcResolved\": \"\"\n}\n]\n}"
+            }
+        ],
+        "created": 1701752417,
+        "id": "foobarbaz",
+        "model": "Mistral Instruct",
+        "object": "text_completion",
+        "usage": {
+            "completion_tokens": 213,
+            "prompt_tokens": 377,
+            "total_tokens": 590
+        }
+    },
+    {
+        "choices": [
+            {
+                "finish_reason": "stop",
+                "index": 0,
+                "logprobs": null,
+                "references": [],
+                "text": "This is the format of an error object:\n {\n{'colNum' : #}, \n {'errorMessage': ''},\n{'file': ''},\n{'lineNum': #},\n{'nextLine':''},\n{'previousLine':''},\n{'resDescr': ''},\n{'src': ''},\n{'srcResolved': ''}\n}\n\nFor each error object given, provide the resolved C++ code in the 'srcResolved' member, and provide a description of the fix in the 'resDescr' member.\n Leave the incorrect code in the 'src' member.\nYour response should be in json format and have an entry for each file, with a nested list of the updated error objects with the following structure:\n{\n{'colNum' : #}, \n {'errorMessage': ''},\n{'file': ''},\n{'lineNum': #},\n{'nextLine':''},\n{'previousLine':''},\n{'resDescr': ''},\n{'src': ''},\n{'srcResolved': ''}\n}\n. Do not prompt your response.\n{'colNum': 40, 'errorMessage': \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 13, 'nextLine': '    return 0', 'previousLine': '{', 'resDescr': '', 'src': '    std::cout << \"in demoerror.cpp\" << endl;', 'srcResolved': ''}{'colNum': 13, 'errorMessage': \"error: expected ';' after return statement\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 14, 'nextLine': '}', 'previousLine': '    std::cout << \"in demoerror.cpp\" << endl;', 'resDescr': '', 'src': '    return 0', 'srcResolved': ''}\n{\n{\n'colNum': 13,\n'errorMessage': \"error: expected ';' after return statement\",\n'file': 'Code/toCompile/demoerror.cpp',\n'lineNum': 14,\n'nextLine': '',\n'previousLine': '    std::cout << \"in demoerror.cpp\" << endl;',\n'resDescr': \"\",\n'src': '    return 0',\n'srcResolved': ''\n},\n{\n'colNum': 13,\n'errorMessage': \"error: expected ';' after return statement\",\n'file': 'Code/toCompile/demoerror.cpp',\n'lineNum': 14,\n'nextLine': '',\n'previousLine': '    std::cout << \"in demoerror.cpp\" << endl;',\n'resDescr': \"\",\n'src': '    return 0;',\n'srcResolved': ''\n}\n}"
+            }
+        ],
+        "created": 1701752511,
+        "id": "foobarbaz",
+        "model": "Mistral Instruct",
+        "object": "text_completion",
+        "usage": {
+            "completion_tokens": 216,
+            "prompt_tokens": 447,
+            "total_tokens": 663
+        }
+    },
+    {
+        "choices": [
+            {
+                "finish_reason": "stop",
+                "index": 0,
+                "logprobs": null,
+                "references": [],
+                "text": "This is the format of an error object:\n {\n{'colNum' : #}, \n {'errorMessage': ''},\n{'file': ''},\n{'lineNum': #},\n{'nextLine':''},\n{'previousLine':''},\n{'resDescr': ''},\n{'src': ''},\n{'srcResolved': ''}\n}\n\nFor each error object given, provide the resolved C++ code in the 'srcResolved' member, and provide a description of the fix in the 'resDescr' member.\n Leave the incorrect code in the 'src' member.\n'srcResolved' should only contain valid c++ code. \n Your response should be in json format and have an entry for each file, with a nested list of the updated error objects with the following structure:\n{\n{'colNum' : #}, \n {'errorMessage': ''},\n{'file': ''},\n{'lineNum': #},\n{'nextLine':''},\n{'previousLine':''},\n{'resDescr': ''},\n{'src': ''},\n{'srcResolved': ''}\n}\n. Do not prompt your response.\n{'colNum': 40, 'errorMessage': \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 13, 'nextLine': '    return 0', 'previousLine': '{', 'resDescr': '', 'src': '    std::cout << \"in demoerror.cpp\" << endl;', 'srcResolved': ''}{'colNum': 13, 'errorMessage': \"error: expected ';' after return statement\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 14, 'nextLine': '}', 'previousLine': '    std::cout << \"in demoerror.cpp\" << endl;', 'resDescr': '', 'src': '    return 0', 'srcResolved': ''}\n{\n{\n{'colNum' : 40, 'errorMessage': \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 13, 'nextLine': '    return 0', 'previousLine': '{', 'resDescr': '', 'src': '    std::cout << \"in demoerror.cpp\" << endl;', 'srcResolved': ''},\n{\n{'colNum' : 13, 'errorMessage': \"error: expected ';' after return statement\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 14, 'nextLine': '', 'previousLine': '    std::cout << \"in demoerror.cpp\" << endl;', 'resDescr': '', 'src': '    return 0', 'srcResolved': ''}\n}"
+            }
+        ],
+        "created": 1701752773,
+        "id": "foobarbaz",
+        "model": "Mistral Instruct",
+        "object": "text_completion",
+        "usage": {
+            "completion_tokens": 212,
+            "prompt_tokens": 462,
+            "total_tokens": 674
+        }
+    },
+    {
+        "choices": [
+            {
+                "finish_reason": "stop",
+                "index": 0,
+                "logprobs": null,
+                "references": [],
+                "text": "This is the format of an error object:\n {\n{'colNum' : #}, \n {'errorMessage': ''},\n{'file': ''},\n{'lineNum': #},\n{'nextLine':''},\n{'previousLine':''},\n{'resDescr': ''},\n{'src': ''},\n{'srcResolved': ''}\n}\n\nFor each error object given, provide the resolved C++ code in the 'srcResolved' member, and provide a description of the fix in the 'resDescr' member.\n Leave the incorrect code in the 'src' member.\n'srcResolved' should only contain valid c++ code. \n Your response should be in json format and have an entry for each file, with a nested list of the updated error objects. Do not prompt your response.\n{'colNum': 40, 'errorMessage': \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 13, 'nextLine': '    return 0', 'previousLine': '{', 'resDescr': '', 'src': '    std::cout << \"in demoerror.cpp\" << endl;', 'srcResolved': ''}{'colNum': 13, 'errorMessage': \"error: expected ';' after return statement\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 14, 'nextLine': '}', 'previousLine': '    std::cout << \"in demoerror.cpp\" << endl;', 'resDescr': '', 'src': '    return 0', 'srcResolved': ''}\n{\n\"Code/toCompile/demoerror.cpp\": [\n{\n\"colNum\": 40,\n\"errorMessage\": \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\",\n\"file\": \"Code/toCompile/demoerror.cpp\",\n\"lineNum\": 13,\n\"nextLine\": \"    return 0\",\n\"previousLine\": \"{\",\n\"resDescr\": \"\",\n\"srcResolved\": \"    std::cout << \\\"in demoerror.cpp\\\" << std::endl;\",\n\"src\": \"\"\n},\n{\n\"colNum\": 13,\n\"errorMessage\": \"error: expected ';' after return statement\",\n\"file\": \"Code/toCompile/demoerror.cpp\",\n\"lineNum\": 14,\n\"nextLine\": \"\",\n\"previousLine\": \"    std::cout << \\\"in demoerror.cpp\\\" << std::endl;\",\n\"resDescr\": \"\",\n\"srcResolved\": \"    return 0;\",\n\"src\": \"\"\n}\n]\n}"
+            }
+        ],
+        "created": 1701752821,
+        "id": "foobarbaz",
+        "model": "Mistral Instruct",
+        "object": "text_completion",
+        "usage": {
+            "completion_tokens": 249,
+            "prompt_tokens": 387,
+            "total_tokens": 636
+        }
+    },
+    {
+        "choices": [
+            {
+                "finish_reason": "stop",
+                "index": 0,
+                "logprobs": null,
+                "references": [],
+                "text": "This is the format of an error object:\n {\n{'colNum' : #}, \n {'errorMessage': ''},\n{'file': ''},\n{'lineNum': #},\n{'nextLine':''},\n{'previousLine':''},\n{'resDescr': ''},\n{'src': ''},\n{'srcResolved': ''}\n}\n\nFor each error object given, provide the resolved C++ code in the 'srcResolved' member, and provide a description of the fix in the 'resDescr' member.\n Leave the incorrect code in the 'src' member.\n'srcResolved' should only contain valid c++ code. \n Your response should be in json format and have an entry for each file, with a nested list of the updated error objects. DO not include newline characters. Do not prompt your response.\n{'colNum': 40, 'errorMessage': \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 13, 'nextLine': '    return 0', 'previousLine': '{', 'resDescr': '', 'src': '    std::cout << \"in demoerror.cpp\" << endl;', 'srcResolved': ''}{'colNum': 13, 'errorMessage': \"error: expected ';' after return statement\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 14, 'nextLine': '}', 'previousLine': '    std::cout << \"in demoerror.cpp\" << endl;', 'resDescr': '', 'src': '    return 0', 'srcResolved': ''}\n{\n\"Code/toCompile/demoerror.cpp\":[\n{\n\"colNum\":40,\n\"errorMessage\":\"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\",\n\"file\":\"Code/toCompile/demoerror.cpp\",\n\"lineNum\":13,\n\"nextLine\":\"    return 0\",\n\"previousLine\":\"{\",\n\"resDescr\":\"Replace 'endl' with std::endl in line 13.\",\n\"srcResolved\":\"{    std::cout << \\\"in demoerror.cpp\\\" << std::endl;}\",\n},\n{\n\"colNum\":13,\n\"errorMessage\":\"error: expected ';' after return statement\",\n\"file\":\"Code/toCompile/demoerror.cpp\",\n\"lineNum\":14,\n\"nextLine\":\"}\",\n\"previousLine\":\"    std::cout << \\\"in demoerror.cpp\\\" << std::endl;\",\n\"resDescr\":\"Add a semicolon after the return statement in line 14.\",\n\"srcResolved\":\"{    std::cout << \\\"in demoerror.cpp\\\" << std::endl;}\",\n}\n]"
+            }
+        ],
+        "created": 1701753133,
+        "id": "foobarbaz",
+        "model": "Mistral Instruct",
+        "object": "text_completion",
+        "usage": {
+            "completion_tokens": 266,
+            "prompt_tokens": 394,
+            "total_tokens": 660
+        }
+    },
+    {
+        "choices": [
+            {
+                "finish_reason": "stop",
+                "index": 0,
+                "logprobs": null,
+                "references": [],
+                "text": "This is the format of an error object:\n {\n{'colNum' : #}, \n {'errorMessage': ''},\n{'file': ''},\n{'lineNum': #},\n{'nextLine':''},\n{'previousLine':''},\n{'resDescr': ''},\n{'src': ''},\n{'srcResolved': ''}\n}\n\nFor each error object given, provide the resolved C++ code in the 'srcResolved' member, and provide a description of the fix in the 'resDescr' member.\n Leave the incorrect code in the 'src' member.\n'srcResolved' should only contain valid c++ code. \n Your response should be in json format and have an entry for each file, with a nested list of the updated error objects. DO not include newlines. Do not prompt your response.\n{'colNum': 40, 'errorMessage': \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 13, 'nextLine': '    return 0', 'previousLine': '{', 'resDescr': '', 'src': '    std::cout << \"in demoerror.cpp\" << endl;', 'srcResolved': ''}{'colNum': 13, 'errorMessage': \"error: expected ';' after return statement\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 14, 'nextLine': '}', 'previousLine': '    std::cout << \"in demoerror.cpp\" << endl;', 'resDescr': '', 'src': '    return 0', 'srcResolved': ''}\n{\n\"Code/toCompile/demoerror.cpp\":[\n{\n\"colNum\":40,\n\"errorMessage\":\"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\",\n\"file\":\"Code/toCompile/demoerror.cpp\",\n\"lineNum\":13,\n\"nextLine\":\"    return 0\",\n\"previousLine\":\"{\",\n\"resDescr\":\"Replace 'endl' with 'std::endl'\",\n\"srcResolved\":\"{   std::cout << \\\"in demoerror.cpp\\\" << std::endl;}\",\n},\n{\n\"colNum\":13,\n\"errorMessage\":\"error: expected ';' after return statement\",\n\"file\":\"Code/toCompile/demoerror.cpp\",\n\"lineNum\":14,\n\"nextLine\":\"}\",\n\"previousLine\":\"    std::cout << \\\"in demoerror.cpp\\\" << std::endl;\",\n\"resDescr\":\"Add a semicolon after the return statement\",\n\"srcResolved\":\"{   std::cout << \\\"in demoerror.cpp\\\" << std::endl;};\"}"
+            }
+        ],
+        "created": 1701753275,
+        "id": "foobarbaz",
+        "model": "Mistral Instruct",
+        "object": "text_completion",
+        "usage": {
+            "completion_tokens": 254,
+            "prompt_tokens": 393,
+            "total_tokens": 647
+        }
+    },
+    {
+        "choices": [
+            {
+                "finish_reason": "stop",
+                "index": 0,
+                "logprobs": null,
+                "references": [],
+                "text": "This is the format of an error object:\n {\n{'colNum' : #}, \n {'errorMessage': ''},\n{'file': ''},\n{'lineNum': #},\n{'nextLine':''},\n{'previousLine':''},\n{'resDescr': ''},\n{'src': ''},\n{'srcResolved': ''}\n}\n\nFor each error object given, provide the resolved C++ code in the 'srcResolved' member, and provide a description of the fix in the 'resDescr' member.\n Leave the incorrect code in the 'src' member.\n'srcResolved' should only contain valid c++ code. \n Your response should be in json format and have an entry for each file, with a nested list of the updated error objects. Do not prompt your response.\n{'colNum': 40, 'errorMessage': \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 13, 'nextLine': '    return 0', 'previousLine': '{', 'resDescr': '', 'src': '    std::cout << \"in demoerror.cpp\" << endl;', 'srcResolved': ''}{'colNum': 13, 'errorMessage': \"error: expected ';' after return statement\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 14, 'nextLine': '}', 'previousLine': '    std::cout << \"in demoerror.cpp\" << endl;', 'resDescr': '', 'src': '    return 0', 'srcResolved': ''}\n{\n\"Code/toCompile/demoerror.cpp\": [\n{\n\"colNum\": 40,\n\"errorMessage\": \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\",\n\"file\": \"Code/toCompile/demoerror.cpp\",\n\"lineNum\": 13,\n\"nextLine\": \"    return 0\",\n\"previousLine\": \"{\",\n\"resDescr\": \"\",\n\"srcResolved\": \"\"\n},\n{\n\"colNum\": 13,\n\"errorMessage\": \"error: expected ';' after return statement\",\n\"file\": \"Code/toCompile/demoerror.cpp\",\n\"lineNum\": 14,\n\"nextLine\": \"\",\n\"previousLine\": \"    std::cout << \\\"in demoerror.cpp\\\" << endl;\",\n\"resDescr\": \"\",\n\"srcResolved\": \"\"\n}\n]\n}"
+            }
+        ],
+        "created": 1701753389,
+        "id": "foobarbaz",
+        "model": "Mistral Instruct",
+        "object": "text_completion",
+        "usage": {
+            "completion_tokens": 213,
+            "prompt_tokens": 387,
+            "total_tokens": 600
+        }
+    },
+    {
+        "choices": [
+            {
+                "finish_reason": "stop",
+                "index": 0,
+                "logprobs": null,
+                "references": [],
+                "text": "This is the format of an error object:\n {\n{'colNum' : #}, \n {'errorMessage': ''},\n{'file': ''},\n{'lineNum': #},\n{'nextLine':''},\n{'previousLine':''},\n{'resDescr': ''},\n{'src': ''},\n{'srcResolved': ''}\n}\n\nFor each error object given, provide the resolved C++ code in the 'srcResolved' member, and provide a description of the fix in the 'resDescr' member.\n Leave the incorrect code in the 'src' member.\n'srcResolved' should only contain valid c++ code. \n Your response should be in json format and have an entry for each file, with a nested list of the updated error objects. Do not prompt your response.\n{'colNum': 40, 'errorMessage': \"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 13, 'nextLine': '    return 0', 'previousLine': '{', 'resDescr': '', 'src': '    std::cout << \"in demoerror.cpp\" << endl;', 'srcResolved': ''}{'colNum': 13, 'errorMessage': \"error: expected ';' after return statement\", 'file': 'Code/toCompile/demoerror.cpp', 'lineNum': 14, 'nextLine': '}', 'previousLine': '    std::cout << \"in demoerror.cpp\" << endl;', 'resDescr': '', 'src': '    return 0', 'srcResolved': ''}\n{\n\"Code/toCompile/demoerror.cpp\":[\n{\n\"colNum\":40,\n\"errorMessage\":\"error: use of undeclared identifier 'endl'; did you mean 'std::endl'?\",\n\"file\":\"Code/toCompile/demoerror.cpp\",\n\"lineNum\":13,\n\"nextLine\":\"    return 0\",\n\"previousLine\":\"{\",\n\"resDescr\":\"Replace 'endl' with 'std::endl'\",\n\"srcResolved\":\"    std::cout << \\\"in demoerror.cpp\\\" << std::endl;\",\n},\n{\n\"colNum\":13,\n\"errorMessage\":\"error: expected ';' after return statement\",\n\"file\":\"Code/toCompile/demoerror.cpp\",\n\"lineNum\":14,\n\"nextLine\":\"}\",\n\"previousLine\":\"    std::cout << \\\"in demoerror.cpp\\\" << std::endl;\",\n\"resDescr\":\"Add a semicolon after the return statement\",\n\"srcResolved\":\"    return 0;\",\n}\n]\n}"
+            }
+        ],
+        "created": 1701753521,
+        "id": "foobarbaz",
+        "model": "Mistral Instruct",
+        "object": "text_completion",
+        "usage": {
+            "completion_tokens": 245,
+            "prompt_tokens": 387,
+            "total_tokens": 632
+        }
     }
 ]
