@@ -25,9 +25,9 @@ if instruction == 'errorsolve':
 
     resultFormat = "{\n{\'colNum\' : #}, \n {\'errorMessage\': \'\'},\n{\'file\': \'\'},\n{\'lineNum\': #},\n{\'nextLine\':\'\'},\n{\'previousLine\':\'\'},\n{\'resDescr\': \'\'},\n{\'src\': \'\'},\n{\'srcResolved\': \'\'}\n}\n"
     basePrompt=f"This is the format of an error object:\n {resultFormat}\n"
-    instruction="For each error object given, provide the resolved C++ code in the \'srcResolved\' member, and provide a description of the fix in the \'resDescr\' member. Leave the incorrect code in the 'src' member.\n"
+    instruction="For each error object given, provide the resolved C++ code in the \'srcResolved\' member, and provide a description of the fix in the \'resDescr\' member.\n Leave the incorrect code in the 'src' member.\n"
     details="\'srcResolved\' should only contain valid c++ code. \n "
-    jsonOnly = "Your response should be in json format and have an entry for each file, with a nested list of the updated error objects. Return only the updated json do not prompt your response.\n"
+    jsonOnly = f"Your response should be in json format and have an entry for each file, with a nested list of the updated error objects. Do not prompt your response.\n"
     file.close()
 
     #print(prompt)
@@ -45,7 +45,7 @@ if instruction == 'errorsolve':
 
     for file, errors in data.items():
         # print(f"File: {file}")
-        prompt = basePrompt + instruction + jsonOnly
+        prompt = basePrompt + instruction + details + jsonOnly
 
         for error in errors:
             prompt = prompt + str(error)
