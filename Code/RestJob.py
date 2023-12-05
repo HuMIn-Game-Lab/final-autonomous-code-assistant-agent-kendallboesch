@@ -38,10 +38,14 @@ if instruction == 'errorsolve':
         write = []
     
     if os.path.exists('fixedErrors.json'):
-        with open('fixedErrors.json') as outFile:
+      with open('fixedErrors.json') as outFile:
+        try:
+            # Try to load the JSON data
             writer = json.load(outFile)
-    else:
-        writer = []
+        except json.decoder.JSONDecodeError:
+            # Handle the case where the file is empty or not in a valid JSON format
+            writer = []
+
 
     for file, errors in data.items():
         # print(f"File: {file}")
@@ -71,14 +75,15 @@ if instruction == 'errorsolve':
             print('had ```json\n\n')
             LLMresponse = LLMresponse[8:]
             LLMresponse = LLMresponse[:-3]
-        print(LLMresponse)
+        # print(LLMresponse)
         
         writer.append(LLMresponse)
         write.append(response)
     with open("Data/convo.json", 'w') as json_file:
         json.dump(write, json_file, indent=4)
     with open('fixedErrors.json', 'w') as outFile:
-        json.dump(writer, outFile, indent=4)
+        outFile.write('\n'.join(map(str,writer)))
+        # json.dump(writer, outFile, indent=4)
     
 elif instruction == 'flowgen':
     print("FLOWGEN")
