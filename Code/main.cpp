@@ -56,6 +56,39 @@ int main()
         std::cout << output << std::endl; 
 
     });
+    syst->registerJobType("rest",[](json& input){
+        std::cout << "in compile job execute" << std::endl; 
+        std::array<char, 128> buffer; 
+        std::string command = "make pyrest "; 
+
+        std::string output = ""; 
+        command.append(input["inputData"]); 
+        command.append(" 2>&1"); 
+
+        FILE* pipe = popen(command.c_str(), "r"); 
+        
+        if(!pipe){
+            std::cout << "Failed to open pipe" << std::endl; 
+            return;}
+        while(fgets(buffer.data(), 128, pipe) != NULL)
+        {output.append(buffer.data());}
+
+        std::string returnCode = std::to_string(pclose(pipe)); 
+
+        //input["returnCode"] = returnCode; 
+
+        if(returnCode != "0")
+        {
+            input["output"] = output;
+            input["success"]="false"; 
+        }
+        else
+        {
+            input["success"] = "true";
+        }
+        input["output"] = output;
+        std::cout << output << std::endl; 
+    }); 
     // register job type 'errorParse'
     syst->registerJobType("errorparse", [](json& input)
     {
@@ -185,6 +218,7 @@ int main()
                     of << toFile.dump(2) << std::endl; 
                     of.close(); 
                     std::cout << "errors written to errors.json" << std::endl; 
+                    input["output"] = "errors.json";
                 }
                 else
                 {
@@ -194,7 +228,25 @@ int main()
         }
 
     });
+    // register 
+    syst->registerJobType("scriptwrite",[](json& input)
+    {
+        std::string scriptfile = "Code/Flowscript/";
+        scriptfile.append(input["inputId"]);
+        scriptfile.append(".md"); 
 
+        std::ofstream outFS(scriptfile); 
+        std::string data = input["inputData"];
+        std::istringstream iss(data);
+        std::string line;
+        while(std::getline(iss,line))
+        {
+            outFS << line << std::endl; 
+        }
+        outFS.close();
+        input["success"] = "true";
+        input["output"] = scriptfile; 
+    });
     // Vector for jobs 
     std::vector<Job*> runningJobs; 
     /********
@@ -203,40 +255,13 @@ int main()
      *  - Use of undeclared identifier 
      *  - Expected ';' after return statement 
     *********/
-    json compJob1 {
+    json compJob {
         {"identifier", "compile"},
         {"inputId","demoerror"},
         {"inputData","demoerror"},
         {"output",""},
         {"success",""}
 
-    };
-    /*******
-     * Compile job for typeError.cpp
-     * Errors: 
-     *  - Use of undeclared identifier 
-     *  - Error assigining 'char' from incompatible type 'std::string'
-    ********/
-    json compJob2 
-    {
-        {"identifier", "compile"},
-        {"inputId", "typeerror"},
-        {"inputData","typeerror"}, 
-        {"output",""},
-        {"success",""}
-    };
-    /*******
-     * Compile job for syntaxerror.json
-     * Errors: 
-     *  - Expected expression
-    *******/
-    json compJob3 
-    {
-        {"identifier", "compile"},
-        {"inputId", "syntaxerror"},
-        {"inputData","syntaxerror"}, 
-        {"output",""},
-        {"success",""}
     };
     /*******
      * Rest job for LLM Calls
@@ -249,80 +274,107 @@ int main()
     ********/
     json flowscriptGenerationJob {
 
-        {"identifier","compile"},
-        {"inputId", "rest1"},
-        {"inputData", "pyrest ARGS=\"flowgen http://localhost:4891/v1 errors.json\""},
+        {"identifier","rest"},
+        {"inputId", "flowgen"},
+        {"inputData", "ARGS=\"flowgen http://localhost:4891/v1 LLMFlowscriptPrompt.txt\""},
         {"output", ""}, 
         {"success", ""}
 
     };
     json restJob {
 
-        {"identifier","compile"},
-        {"inputId", "rest1"},
-        {"inputData", "pyrest ARGS=\"errorsolve http://localhost:4891/v1 errors.json\""},
+        {"identifier","rest"},
+        {"inputId", "resterror"},
+        {"inputData", "ARGS=\"errorsolve http://localhost:4891/v1 errors.json\""},
         {"output", ""}, 
         {"success", ""}
 
     };
 
-    // runningJobs.push_back(syst->createJob(flowscriptGenerationJob)); 
+    syst->loadInput(compJob);
+    syst->loadInput(restJob);
 
-
-    // Create the compile Jobs & add them to runningJobs vector
-    runningJobs.push_back(syst->createJob(compJob1)); 
-    // // runningJobs.push_back(syst->createJob(compJob2)); 
-    // // runningJobs.push_back(syst->createJob(compJob3)); 
-
-    // // keeps track of whether or not to send a rest job
-    bool needsErrorHandling = false; 
-
-    // Queue the jobs
-    for(int i = 0; i < runningJobs.size(); i++)
+    json writeScriptJob 
     {
-        syst->queueJob(runningJobs[i]); 
-    }
-    // Finish the Jobs
-    for( int j = 0; j < runningJobs.size(); j++)
-    {
-       std::pair<std::string, std::string> res = syst->finishJob(runningJobs[j]); 
-       // If compilation was successful 
-       if(res.second == "true")
-       {
-            std::cout << "Successful Compilation:\n" << res.first << std::endl; 
-       }
-       else // Compilation failed 
-       {    
-            needsErrorHandling = true; 
-            // Set unique inputId
-            std::string inputId = "errorparse"; 
-            inputId.append(std::to_string(j)); 
-            // Create errorparse input 
-            json parse 
-            {
-                {"identifier", "errorparse"},
-                {"inputId", inputId},
-                {"inputData",res.first},
-                {"output",""},
-                {"success",""}
-            };
-            // Create, queue, & finish errorparse job
-            Job* p = syst->createJob(parse); 
-            syst->queueJob(p); 
-            syst->finishJob(p);
-            std::cout << "We have an issue" << std::endl; 
-        }
-    }
-    // if at least one of the compile jobs were unsuccessful 
-    if(needsErrorHandling)
-    {   
-        // Create, queue, and finish a rest job
-        Job* r = syst->createJob(restJob);
-        syst->queueJob(r); 
-        std::pair<std::string, std::string> res = syst->finishJob(r); 
+        {"identifier", "scriptwrite"},
+        {"inputId", "script1"},
+        {"inputData",""}, 
+        {"output",""},
+        {"success",""}
+    };
 
-        std::cout << "\n\n\nRETURNED FROM REST JOB:\n" << res.first << std:: endl; 
-    }
+
+    syst->getAllJobTypes();
+// WILL BE IN FINAL SUBMIT - taking out for now
+    // Job* scriptGeneration = syst->createJob(flowscriptGenerationJob);
+    // syst->queueJob(scriptGeneration); 
+    // std::pair<std::string,std::string> scriptGenReturn = syst->finishJob(scriptGeneration);
+
+    //writeScriptJob['inputData'] = scriptGenReturn.first; 
+    // Job* scriptWrite = syst->createJob(writeScriptJob); 
+    // syst->queueJob(scriptWrite);
+    FlowscriptInterpreter* interpreter = new FlowscriptInterpreter(syst); 
+    // interpreter->interpret(syst->finishJob(scriptWrite).first);
+    interpreter->interpret("Code/Flowscript/FunctionCall.md");
+
+
+
+
+    // // Create the compile Jobs & add them to runningJobs vector
+    // // runningJobs.push_back(syst->createJob(compJob1)); 
+    // // // runningJobs.push_back(syst->createJob(compJob2)); 
+    // // // runningJobs.push_back(syst->createJob(compJob3)); 
+
+    // // // keeps track of whether or not to send a rest job
+    // bool needsErrorHandling = false; 
+
+    // // Queue the jobs
+    // for(int i = 0; i < runningJobs.size(); i++)
+    // {
+    //     syst->queueJob(runningJobs[i]); 
+    // }
+    // // Finish the Jobs
+    // for( int j = 0; j < runningJobs.size(); j++)
+    // {
+    //    std::pair<std::string, std::string> res = syst->finishJob(runningJobs[j]); 
+    //    // If compilation was successful 
+    //    if(res.second == "true")
+    //    {
+    //         std::cout << "Successful Compilation:\n" << res.first << std::endl; 
+    //    }
+    // //    else // Compilation failed 
+    // //    {    
+    // //         needsErrorHandling = true; 
+    // //         // Set unique inputId
+    // //         std::string inputId = "errorparse"; 
+    // //         inputId.append(std::to_string(j)); 
+    // //         // Create errorparse input 
+    // //         json parse 
+    // //         {
+    // //             {"identifier", "errorparse"},
+    // //             {"inputId", inputId},
+    // //             {"inputData",res.first},
+    // //             {"output",""},
+    // //             {"success",""}
+    // //         };
+    // //         // Create, queue, & finish errorparse job
+    // //         Job* p = syst->createJob(parse); 
+    // //         syst->queueJob(p); 
+    // //         syst->finishJob(p);
+    // //         std::cout << "We have an issue" << std::endl; 
+    // //     }
+   
+    // }
+    // // if at least one of the compile jobs were unsuccessful 
+    // if(needsErrorHandling)
+    // {   
+    //     // Create, queue, and finish a rest job
+    //     Job* r = syst->createJob(restJob);
+    //     syst->queueJob(r); 
+    //     std::pair<std::string, std::string> res = syst->finishJob(r); 
+
+    //     std::cout << "\n\n\nRETURNED FROM REST JOB:\n" << res.first << std:: endl; 
+    // }
 
       // json input for custom compile job 
         // job completes with erros & invokes child job    
