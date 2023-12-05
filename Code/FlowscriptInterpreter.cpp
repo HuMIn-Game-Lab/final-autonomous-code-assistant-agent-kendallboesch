@@ -796,7 +796,7 @@ void FlowscriptInterpreter::buildFlow()
             }
             jobToks = jobs.find(jobid)->second; 
 
-            if(isKeyword(jobs.find(jobid)->second[4].tokenValue)
+            if(isKeyword(jobs.find(jobid)->second[4].tokenValue) != -1
                 && jobs.find(jobid)->second[4].tokenValue != keywords[POINT])
             {
                 json in {
