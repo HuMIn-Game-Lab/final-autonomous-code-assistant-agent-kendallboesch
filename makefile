@@ -22,6 +22,7 @@ syntaxerror:
 
 errorreset:
 		rm -r errors.json
+		rm -r fixedErrors.json
 
 convowrite:
 		clang++ -std=c++14 -o out Code/convoHander.cpp 
