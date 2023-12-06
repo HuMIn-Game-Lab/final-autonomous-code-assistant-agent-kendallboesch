@@ -44,8 +44,9 @@ if instruction == 'errorsolve':
             writer = json.load(outFile)
         except json.decoder.JSONDecodeError:
             # Handle the case where the file is empty or not in a valid JSON format
-            writer = []
-
+           writer = []
+    else:
+        writer = []
 
     for file, errors in data.items():
         # print(f"File: {file}")
@@ -84,6 +85,7 @@ if instruction == 'errorsolve':
     with open('fixedErrors.json', 'w') as outFile:
         outFile.write('\n'.join(map(str,writer)))
         # json.dump(writer, outFile, indent=4)
+    print('fixedErrors.json')
     
 elif instruction == 'flowgen':
     print("FLOWGEN")
