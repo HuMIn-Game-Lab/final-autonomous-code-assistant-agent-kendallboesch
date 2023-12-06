@@ -63,6 +63,7 @@ int main()
 
         std::string output = ""; 
         command.append(input["inputData"]); 
+        std::string extractCommand = command;
         command.append(" 2>&1"); 
 
         FILE* pipe = popen(command.c_str(), "r"); 
@@ -74,20 +75,26 @@ int main()
         {output.append(buffer.data());}
 
         std::string returnCode = std::to_string(pclose(pipe)); 
+        size_t firstLine = output.find('\n');
+        std::cout <<"size_t: " << firstLine << std::endl; 
+        size_t second;
 
         //input["returnCode"] = returnCode; 
 
         if(returnCode != "0")
         {
-            input["output"] = output;
             input["success"]="false"; 
         }
         else
         {
             input["success"] = "true";
         }
+        output=output.substr(firstLine +1);
+        second = output.find('\n');
+        output=output.substr(0,second);
+        std::cout << "UPDATED" << std::endl; 
         input["output"] = output;
-        std::cout << output << std::endl; 
+        std::cout <<"REST OUTPUT: "<< output << std::endl; 
     }); 
     // register job type 'errorParse'
     syst->registerJobType("errorparse", [](json& input)
@@ -251,7 +258,11 @@ int main()
     syst->registerJobType("coderepair", [](json& input){
         std::string fixFile = input["inputData"]; 
         std::cout << "in code repair.\nfile: " << fixFile << std::endl; 
+       // startInd = fixFile.find('Code/toCompile/');
+        // fixFile = fixFile.substr(fixFile.find('\n'));
+        std::cout <<"Path Length: " << fixFile.size() << std::endl; 
         std::ifstream inFS(fixFile);
+        // std::ifstream inFS("fixedErrors.json");
         json data; 
 
         if(inFS.is_open())
@@ -379,9 +390,18 @@ int main()
         {"output",""},
         {"success",""}
     };
+    json testCodeFix
+    {
+        {"identifier", "coderepair"},
+        {"inputId","testcodefix"},
+        {"inputData", "file: python3 ./Code/RestJob.py errorsolve http://localhost:4891/v1 errors.json\nfixedErrors.json"},
+        {"output",""},
+        {"success",""}
+    }; 
 
+    syst->loadInput(testCodeFix);
 
-    syst->getAllJobTypes();
+   // syst->getAllJobTypes();
 // WILL BE IN FINAL SUBMIT - taking out for now
     // Job* scriptGeneration = syst->createJob(flowscriptGenerationJob);
     // syst->queueJob(scriptGeneration); 
@@ -390,10 +410,43 @@ int main()
     //writeScriptJob['inputData'] = scriptGenReturn.first; 
     // Job* scriptWrite = syst->createJob(writeScriptJob); 
     // syst->queueJob(scriptWrite);
+
+    bool validUI = false; 
+    std::string flowFile = ""; 
+    while(!validUI)
+    {
+        std::cout << "pick flowscript file:\n\t1 - functioncall.md\n\t2 - codefixcheck.md\n\t3 - restfix.md\n\n"; 
+       std::string input;
+       std::getline(std::cin, input); 
+        int ui = std::stoi(input);
+        
+
+    
+        
+        switch(ui)
+        {
+            case 1:
+                flowFile = "Code/Flowscript/FunctionCall.md";
+                validUI = true;
+                break;
+            case 2: 
+                flowFile = "Code/Flowscript/codefixcheck.md";
+                validUI = true;
+                break;
+            case 3: 
+                flowFile = "Code/Flowscript/restfix.md";
+                validUI = true;
+                break;
+            default:
+                std::cout << "Invalid Choice" << std:: endl; 
+    
+        };
+    }
     FlowscriptInterpreter* interpreter = new FlowscriptInterpreter(syst); 
     // interpreter->interpret(syst->finishJob(scriptWrite).first);
-    interpreter->interpret("Code/Flowscript/FunctionCall.md");
-
+   interpreter->interpret(flowFile);
+    // interpreter->interpret("Code/Flowscript/FunctionCall.md");
+   //interpreter->interpret("Code/Flowscript/restfix.md");
     return 0;
 
 }
