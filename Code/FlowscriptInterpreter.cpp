@@ -321,20 +321,26 @@ bool FlowscriptInterpreter::syntacticalAnalysis()
         int lineNum = lineItr->first; 
         auto itr = tokens.find(lineNum); 
 
+        //If it is the first line of the program 
         if(lineNum ==0)
         {
-           // std::cout << "is line 0" << std::endl; 
+            // if the line is a block title (Ex: 'digraph process')
             if(toLexToken(itr->second) == validSyntax.find(BLOCK_TITLE)->second)
             {
+                // if the block identifier does not already exist
                 if(!isExistingIdentifier(itr->second[1].tokenValue))
                 {
+                    // if the first key word is digraph
                     if (itr->second[0].tokenValue == keywords[DIGRAPH])
                     {
+                        // get the next line & ensure it is a block bound
                         if (toLexToken(tokens.find(lineNum+1)->second) == validSyntax.find(BLOCK_BOUND)->second)
                         {
+                            // ensure blockbound is block start 
                             if(tokens.find(lineNum+1)->second[0].tokenValue[0] == blockStart)
                             {
-                                //std::cout << "Found Beginning of script " << std::endl; 
+                                // Found the beginning of the script
+                                    // push back the synxas token and the vector of token structs to the Token map 
                                 programStatements.push_back({BLOCK_TITLE,tokens.find(lineNum)->second}); 
                                 programStatements.push_back({BLOCK_BOUND,tokens.find(lineNum+1)->second});
                                 lineNum++;                                
@@ -376,17 +382,22 @@ bool FlowscriptInterpreter::syntacticalAnalysis()
         }
         else // not line 0 
         {
+            // if it is a block title
             if (toLexToken(itr->second) == validSyntax.find(BLOCK_TITLE)->second)
             {
+                // if the 2nd token is not an  existing identifier 
                 if(!isExistingIdentifier(itr->second[1].tokenValue))
                 {
-                    // is subgraph 
+                    // if keyword is subgraph 
                     if(itr->second[0].tokenValue == keywords[SUBGRAPH])
                     {
+                        // if the following line is a block bound
                         if(toLexToken(tokens.find(lineNum+1)->second) == validSyntax.find(BLOCK_BOUND)->second)
                         {
+                            // if the following line is a block start
                             if(tokens.find(lineNum+1)->second[0].tokenValue[0] == blockStart)
                             {
+                                // found code block definiton
                                // std::cout << "found thread definition" << std::endl;
                                 programStatements.push_back({BLOCK_TITLE,tokens.find(lineNum)->second}); 
                                 programStatements.push_back({BLOCK_BOUND,tokens.find(lineNum+1)->second});
@@ -423,20 +434,26 @@ bool FlowscriptInterpreter::syntacticalAnalysis()
                     errors = true;
                 }
             }
+            // Is not a block title -- check to see if is a job
             else if(toLexToken(itr->second) == validSyntax.find(DEPENDENT_JOB)->second
                 || toLexToken(itr->second) == validSyntax.find(UI_JOB)->second)
             {
+                // ensure brackets are properly ordered
                 if(itr->second[1].tokenValue[0] < itr->second[5].tokenValue[0])
                 {
+                    // if the 4th token is an assignment operator 
                     if(itr->second[3].tokenValue[0] == operators[ASSIGNMENT][ASSIGNMENT])
                     {
+                        // if the job identifier does not already exist 
                         if(!isExistingIdentifier(itr->second[0].tokenValue))
                         {
+                            // if the keyword in the brackets is 'label'
                             if(itr->second[2].tokenValue == keywords[LABEL])
-                            {
+                            {   
+                                // if the label value is a job type
                                 if(isKeyword(itr->second[4].tokenValue) > 6)
                                 {
-                                 //   std::cout << "FOUND DEPENDENCY JOB" << std::endl; 
+                                    // is dependency job 
                                     programStatements.push_back({DEPENDENT_JOB,tokens.find(lineNum)->second}); 
                                     identifiers.push_back(itr->second[0].tokenValue);
                                     //this->jobs.push_back(itr->second); 
@@ -445,7 +462,7 @@ bool FlowscriptInterpreter::syntacticalAnalysis()
                                 }
                                 else if (isKeyword(itr->second[4].tokenValue) == -1)
                                 {
-                                   // std::cout << "FOUND USER INPUT JOB" << std::endl; 
+                                    // fis UI job
                                     programStatements.push_back({UI_JOB,tokens.find(lineNum)->second});
                                     identifiers.push_back(itr->second[0].tokenValue);
                                     this->jobs.insert({itr->second[0].tokenValue, itr->second}); 
@@ -456,11 +473,13 @@ bool FlowscriptInterpreter::syntacticalAnalysis()
                                     errors = true;
                                }
                             }
+                            // if the keyword in the bracket is 'shape'
                             else if (itr->second[2].tokenValue == keywords[SHAPE])
                             {
+                                // if the value of 'shape' is 'point'
                                 if(itr->second[4].tokenValue == keywords[POINT])
                                 {
-                                   // std::cout << "END POINT" << std::endl; 
+                                    // is process endpoint
                                     programStatements.push_back({END_POINT,tokens.find(lineNum)->second}); 
                                     identifiers.push_back(itr->second[0].tokenValue); 
 
@@ -505,18 +524,23 @@ bool FlowscriptInterpreter::syntacticalAnalysis()
 
                 }
             }
+            // is not block title, job declaration, or end point -- check if is a dependency 
             else if(toLexToken(itr->second) == validSyntax.find(EXECUTIONAL_DEPENDENCY)->second
                 || toLexToken(itr->second) == validSyntax.find(CONDIITONAL_DEPENDENCY)->second)
             {
+                // if the identifier already exists
                 if(isExistingIdentifier(itr->second[0].tokenValue))
                 {
+                    // if the 2nd token is the dependency operator
                     if (itr->second[1].tokenValue == operators[DEPENDENCY])
                     {
+                        // if the 3rd token is an existing job identifier 
                         if (isExistingIdentifier(itr->second[2].tokenValue))
                         {
+                            // if the line is 4 tokens long (<ID><OPERATOR><ID><TERMINATOR>)
                             if(itr->second.size() == 4)
                             {
-                                //std::cout << "Found EXECUTIONAL DEPENDENCY" << std::endl; 
+                                // is an executional dependency 
                                 programStatements.push_back({EXECUTIONAL_DEPENDENCY,tokens.find(lineNum)->second}); 
 
                                 auto depItr = dependencies.find(itr->second[2].tokenValue); 
@@ -526,11 +550,12 @@ bool FlowscriptInterpreter::syntacticalAnalysis()
                                 }
                                 depItr = dependencies.find(itr->second[2].tokenValue); 
                                 depItr->second.push_back(itr->second[0].tokenValue); 
-                                depItr = dependencies.find(itr->second[0].tokenValue);
-                                if(depItr == dependencies.end())
-                                {
-                                    dependencies.insert({itr->second[0].tokenValue, {}}); 
-                                }
+                               
+                                // depItr = dependencies.find(itr->second[0].tokenValue);
+                                // if(depItr == dependencies.end())
+                                // {
+                                //     dependencies.insert({itr->second[0].tokenValue, {}}); 
+                                // }
 
                                 auto orderItr = executionDetails.find(itr->second[0].tokenValue); 
                                 if(orderItr == executionDetails.end())
@@ -732,8 +757,6 @@ std::vector<FlowscriptInterpreter::LexToken> FlowscriptInterpreter::toLexToken(s
     return tks; 
 }
 
-
-
 bool FlowscriptInterpreter::getEndID()
 {
    for(int i = 0; i < programStatements.size(); i++)
@@ -755,29 +778,41 @@ void FlowscriptInterpreter::buildFlow()
     std::string jobid;
     std::vector<Token> jobToks; 
 
+    // get the initial job for the process
     jobToks = jobs.find(getParentJob())->second;
     std::string inputId = jobToks[4].tokenValue; //get job input 
 
+    // get the preloaded json input
     json jin = syst->getJobInputFromID(inputId); 
+    // if the input as a jpob type identifier
     if(jin["identifier"] != "")
     {
+        // create the job
         Job* job = syst->createJob(jin); 
         bool completed = false; 
+        // queue start job
         syst->queueJob(job); 
+        // finish start job 
         std::pair<std::string, std::string> p = syst->finishJob(job); 
         jobid = jobToks[0].tokenValue;
-          auto itr = executionDetails.find(jobid); 
+        auto itr = executionDetails.find(jobid); 
+        // while the process end point has not been reached 
         while(!completed)
         {
+            std::string nextJob = ""; 
             
             Job* j; 
+            // get the execution details for the current job
             itr = executionDetails.find(jobid); 
+            // get the vector of tokens that make up the job
             jobToks = jobs.find(jobid)->second; 
 
+            // if the job just finished was a success 
             if (p.second == keywords[TRUE])
             {
                // std::cout << "TRUE" << std::endl; 
-                jobid=itr->second.id_ifTrue; 
+               //nextJob = itr->second.id_ifTrue; 
+              jobid=itr->second.id_ifTrue; 
             }
             else if(p.second == keywords[FALSE])
             {
@@ -822,7 +857,7 @@ void FlowscriptInterpreter::buildFlow()
                 syst->queueJob(j);
             }
          // std::cout <<"finishing" << std::endl;
-            std::pair<std::string, std::string> p = syst->finishJob(j);
+            p = syst->finishJob(j);
          // std::cout <<"cal;led" << std::endl; 
         }
     }
