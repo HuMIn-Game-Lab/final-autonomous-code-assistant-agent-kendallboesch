@@ -543,19 +543,30 @@ bool FlowscriptInterpreter::syntacticalAnalysis()
                                 // is an executional dependency 
                                 programStatements.push_back({EXECUTIONAL_DEPENDENCY,tokens.find(lineNum)->second}); 
 
+                                // check if the dependent job exists as a key in the depenency map
                                 auto depItr = dependencies.find(itr->second[2].tokenValue); 
                                 if(depItr == dependencies.end())
-                                {
+                                {   
+                                    // insert dependent job ID in dependency map 
                                     dependencies.insert({itr->second[2].tokenValue, {}}); 
                                 }
+                                // find the dependent job key in the map
                                 depItr = dependencies.find(itr->second[2].tokenValue); 
+                                // Push the parent job onto the vector of jobs to be completed 
+                                        // before the dependent job can be queued
                                 depItr->second.push_back(itr->second[0].tokenValue); 
                                
-                                // depItr = dependencies.find(itr->second[0].tokenValue);
-                                // if(depItr == dependencies.end())
-                                // {
-                                //     dependencies.insert({itr->second[0].tokenValue, {}}); 
-                                // }
+                               // check if the parent job exists in the map as a key
+                                depItr = dependencies.find(itr->second[0].tokenValue);
+                                if(depItr == dependencies.end())
+                                {
+                                    // insert if it does not 
+                                        // this happens when the first job of the process is 
+                                            // being read in --> need it as key value pair
+                                            // with empty value vector becuase that's how
+                                            // the flow builder identifies the starting job 
+                                   dependencies.insert({itr->second[0].tokenValue, {}}); 
+                                }
 
                                 auto orderItr = executionDetails.find(itr->second[0].tokenValue); 
                                 if(orderItr == executionDetails.end())
@@ -569,6 +580,7 @@ bool FlowscriptInterpreter::syntacticalAnalysis()
                                     
                                     executionDetails.insert({itr->second[0].tokenValue,l}); 
                                 }
+                            
                            
                             }
                             else
