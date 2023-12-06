@@ -228,7 +228,7 @@ int main()
         }
 
     });
-    // register 
+    // register job type 'scriptwrite'
     syst->registerJobType("scriptwrite",[](json& input)
     {
         std::string scriptfile = "Code/Flowscript/";
@@ -247,6 +247,83 @@ int main()
         input["success"] = "true";
         input["output"] = scriptfile; 
     });
+    // register job type 'coderepair'
+    syst->registerJobType("coderepair", [](json& input){
+        std::string fixFile = input["inputData"]; 
+        std::cout << "in code repair.\nfile: " << fixFile << std::endl; 
+        std::ifstream inFS(fixFile);
+        json data; 
+
+        if(inFS.is_open())
+        {
+            try
+            {
+                inFS >> data; 
+            }
+            catch (const json::parse_error& e)
+            {
+                std::cerr << "Error parsing JSON: " << e.what() << std::endl; 
+                input["success"] = "false"; 
+            }
+
+            // inFS.close(); 
+        }
+        else 
+        {
+            std::cerr << "Error opening the file" << std::endl; 
+            input["success"]="false"; 
+        }
+
+        for (auto& entry : data.items())
+        {
+            const std::string& fPath = entry.key(); 
+            const json& errorArray = entry.value(); 
+            std::vector<std::pair<int, std::string>> fixes; 
+            for(const auto& error: errorArray)
+            {
+                std::string strLineNum = error["lineNum"];
+                fixes.push_back(std::make_pair(std::stoi(strLineNum),error["srcResolved"])); 
+            }
+
+            std::fstream cppfile(fPath, std::ios::in | std::ios::out);
+            if(cppfile.is_open())
+            {
+                int currentLine = 0; 
+
+                for( int i = 0; i < fixes.size(); i++)
+                {
+                    int lineNum = fixes[i].first; 
+                    std::string fix = fixes[i].second;
+                    std::string old = "";
+                    while(currentLine <= lineNum)
+                    {
+                        std::getline(cppfile,old);
+                        if(currentLine == lineNum)
+                        {
+                            cppfile << fix <<std::endl; 
+                        }
+                    }
+                }
+            input["success"] = true; 
+            std::string target = fPath;
+            while(target.find("/") != std::string::npos)
+            {
+                target = target.substr(target.find("/") + 1); 
+            }
+            input["output"] = target;
+
+            }
+            else
+            {
+                input["success"]="false";
+            }
+
+
+        }
+
+
+    });
+
     // Vector for jobs 
     std::vector<Job*> runningJobs; 
     /********
@@ -317,117 +394,6 @@ int main()
     // interpreter->interpret(syst->finishJob(scriptWrite).first);
     interpreter->interpret("Code/Flowscript/FunctionCall.md");
 
-
-
-
-    // // Create the compile Jobs & add them to runningJobs vector
-    // // runningJobs.push_back(syst->createJob(compJob1)); 
-    // // // runningJobs.push_back(syst->createJob(compJob2)); 
-    // // // runningJobs.push_back(syst->createJob(compJob3)); 
-
-    // // // keeps track of whether or not to send a rest job
-    // bool needsErrorHandling = false; 
-
-    // // Queue the jobs
-    // for(int i = 0; i < runningJobs.size(); i++)
-    // {
-    //     syst->queueJob(runningJobs[i]); 
-    // }
-    // // Finish the Jobs
-    // for( int j = 0; j < runningJobs.size(); j++)
-    // {
-    //    std::pair<std::string, std::string> res = syst->finishJob(runningJobs[j]); 
-    //    // If compilation was successful 
-    //    if(res.second == "true")
-    //    {
-    //         std::cout << "Successful Compilation:\n" << res.first << std::endl; 
-    //    }
-    // //    else // Compilation failed 
-    // //    {    
-    // //         needsErrorHandling = true; 
-    // //         // Set unique inputId
-    // //         std::string inputId = "errorparse"; 
-    // //         inputId.append(std::to_string(j)); 
-    // //         // Create errorparse input 
-    // //         json parse 
-    // //         {
-    // //             {"identifier", "errorparse"},
-    // //             {"inputId", inputId},
-    // //             {"inputData",res.first},
-    // //             {"output",""},
-    // //             {"success",""}
-    // //         };
-    // //         // Create, queue, & finish errorparse job
-    // //         Job* p = syst->createJob(parse); 
-    // //         syst->queueJob(p); 
-    // //         syst->finishJob(p);
-    // //         std::cout << "We have an issue" << std::endl; 
-    // //     }
-   
-    // }
-    // // if at least one of the compile jobs were unsuccessful 
-    // if(needsErrorHandling)
-    // {   
-    //     // Create, queue, and finish a rest job
-    //     Job* r = syst->createJob(restJob);
-    //     syst->queueJob(r); 
-    //     std::pair<std::string, std::string> res = syst->finishJob(r); 
-
-    //     std::cout << "\n\n\nRETURNED FROM REST JOB:\n" << res.first << std:: endl; 
-    // }
-
-      // json input for custom compile job 
-        // job completes with erros & invokes child job    
-    // json compError = {
-    //     {"identifier","compile"},
-    //     {"inputId", "comperror"},
-    //     {"inputData", "demoerror"},
-    //     {"output", ""}, 
-    //     {"success", ""}
-    // }; 
-    // json compAuto = {
-    //     {"identifier","compile"},
-    //     {"inputId", "compAuto"},
-    //     {"inputData", "automated"},
-    //     {"output", ""}, 
-    //     {"success", ""}
-    // }; 
-    // //json input for custom compile job 
-    //     // job completes weithout errors -> no child job created 
-    // json compWorking = {
-    //     {"identifier","compile"},
-    //     {"inputId", "compWorking"},
-    //     {"inputData", "demoWorking"},
-    //     {"output", ""}, 
-    //     {"success", ""}
-    // }; 
-    //   json testJob = {
-    //     {"identifier","test"},
-    //     {"inputId", "testJob"},
-    //     {"inputData", "test data 123"},
-    //     {"output", ""}, 
-    //     {"success", ""}
-    // }; 
-
-    // if(syst->loadInput(compError))
-    // {
-    //     std::cout << "Input loaded: " << compError << std::endl; 
-    // }
-    // if(syst->loadInput(compAuto))
-    // {
-    //     std::cout << "Input loaded: " << compAuto << std::endl; 
-    // }
-    // if(syst->loadInput(compWorking))
-    // {
-    //     std::cout << "Input loaded: " << compWorking << std::endl; 
-    // }
-    // if(syst->loadInput(testJob))
-    // {
-    //     std::cout << "Input loaded: " << testJob << std::endl; 
-    // }
-
-    // FlowscriptInterpreter* intrp = new FlowscriptInterpreter(syst); 
-    // intrp->interpret("Code/Flowscript/FunctionCall.md");
     return 0;
 
 }
