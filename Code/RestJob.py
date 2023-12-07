@@ -23,11 +23,15 @@ if instruction == 'errorsolve':
     file = open(promptFile)
     data =json.load(file)
 
-    resultFormat = "{\n{\'colNum\' : #}, \n {\'errorMessage\': \'\'},\n{\'file\': \'\'},\n{\'lineNum\': #},\n{\'nextLine\':\'\'},\n{\'previousLine\':\'\'},\n{\'resDescr\': \'\'},\n{\'src\': \'\'},\n{\'srcResolved\': \'\'}\n}\n"
-    basePrompt=f"This is the format of an error object:\n {resultFormat}\n"
+    inputFormat = "{\n{\'colNum\' : #}, \n {\'errorMessage\': \'\'},\n{\'file\': \'\'},\n{\'lineNum\': #},\n{\'nextLine\':\'\'},\n{\'previousLine\':\'\'},\n{\'resDescr\': \'\'},\n{\'src\': \'\'},\n{\'srcResolved\': \'\'}\n}\n"
+    erRes = "{\"colNum\" : #}, \n {\"errorMessage\": \"\"},\n{\"file\": \"\"},\n{\"lineNum\": #},\n{\"nextLine\":\"\"},\n{\"previousLine\":\"\"},\n{\"resDescr\": \"\"},\n{\"src\": \"\"},\n{\"srcResolved\": \"\"}\n"
+    basePrompt=f"This is the format of an error object:\n {inputFormat}\n"
     instruction="For each error object given, provide the resolved C++ code in the \'srcResolved\' member, and provide a description of the fix in the \'resDescr\' member.\n Leave the incorrect code in the 'src' member.\n"
-    details="\'srcResolved\' should only contain valid c++ code. \n "
-    jsonOnly = f"Your response should be in json format and have an entry for each file, with a nested list of the updated error objects. Do not prompt your response.\n"
+    details="\'srcResolved\' should only contain valid c++ code. Replace \"path/to/file.cpp\" with the \'file\' memeber in the error object.\n "
+    noPrompt = f"\nDo not prompt your response.\n"
+    responseFormatOpen = "{\n\"path/to/file.cpp\": [\n"
+    responseFormatClose = "\n]\n}\n"
+    responseformat = f"Your response should be in the following valid json format:\n{responseFormatOpen}{erRes},{erRes}{responseFormatClose}"
     file.close()
 
     #print(prompt)
@@ -50,8 +54,8 @@ if instruction == 'errorsolve':
 
     for file, errors in data.items():
         # print(f"File: {file}")
-        prompt = basePrompt + instruction + details + jsonOnly
-
+        # prompt = basePrompt + instruction + details + responseformat + noPrompt
+        prompt = basePrompt + responseformat + instruction + details + noPrompt
         for error in errors:
             prompt = prompt + str(error)
             # print(f"Error: {error}")
