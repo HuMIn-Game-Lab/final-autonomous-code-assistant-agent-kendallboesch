@@ -260,11 +260,12 @@ int main()
         std::cout << "in code repair.\nfile: " << fixFile << std::endl; 
        // startInd = fixFile.find('Code/toCompile/');
         // fixFile = fixFile.substr(fixFile.find('\n'));
-        std::cout <<"Path Length: " << fixFile.size() << std::endl; 
+       // std::cout <<"Path Length: " << fixFile.size() << std::endl; 
         std::ifstream inFS(fixFile);
         // std::ifstream inFS("fixedErrors.json");
         json data; 
-
+        std::string jobOutput = "";
+    
         if(inFS.is_open())
         {
             try
@@ -287,7 +288,7 @@ int main()
 
         for (auto& entry : data.items())
         {
-            std::cout << "in for(auto& entry)" << std::endl;
+            //std::cout << "in for(auto& entry)" << std::endl;
             const std::string& fPath = entry.key(); 
             const json& errorArray = entry.value(); 
             std::vector<std::pair<int, std::string>> fixes; 
@@ -335,50 +336,20 @@ int main()
                     std::cout << "Failed to resolve cpp" << std::endl;
                 }
                 resolvedcpp.close();
-           //     // for( int i = 0; i < fixes.size(); i++)
-                // {
-                //     int errorLine = fixes[i].first; 
-                //     std::string fix = fixes[i].second;
-                    
-                //     bool searching = true; 
+                int offset = strlen("Code/toCompile/"); 
+                std::string target = fPath.substr(offset, fPath.size() - offset - 4);
 
-                //     while(searching)
-                //     {
-                //         std::string old = "";
+                jobOutput.append(target);
+               // jobOutput.append(" ");
 
-                //         std::getline(cppfile,old); 
-                //         if(currentLine != errorLine)
-                //         {
-                //             newcpp.push_back(old); 
-                //         } 
-                //         else
-                //         {
-                //             newcpp.push_back(fix);
-                //             if(!cppfile.eof()){currentLine++;}
-                //             searching = false; 
-                //         }
-                //         if(!cppfile.eof()){currentLine++;}
-                //     }
-
-                // }
-                // input["success"] = "true"; 
-                // std::string target = fPath;
-                // while(target.find("/") != std::string::npos)
-                // {
-                //     target = target.substr(target.find("/") + 1); 
-                // }
-                // input["output"] = target;
+                input["output"] = jobOutput;
+                input["success"] = "true"; 
 
             }
-            // else
-            // {
-            //     input["success"]="false";
-            // }
-
-
+            else{
+                input["success"]="false";
+            }
         }
-
-
     });
 
     // Vector for jobs 
@@ -461,7 +432,7 @@ int main()
     std::string flowFile = ""; 
     while(!validUI)
     {
-        std::cout << "pick flowscript file:\n\t1 - functioncall.md\n\t2 - codefixcheck.md\n\t3 - restfix.md\n\n"; 
+        std::cout << "pick flowscript file:\n\t1 - functioncall.md\n\t2 - codefixcheck.md\n\t3 - restfix.md\n4 - withcycle.md\n\n"; 
        std::string input;
        std::getline(std::cin, input); 
         int ui = std::stoi(input);
@@ -484,6 +455,10 @@ int main()
                 flowFile = "Code/Flowscript/restfix.md";
                 validUI = true;
                 break;
+            case 4:
+                flowFile = "Code/Flowscript/withcycle.md";
+                validUI = true; 
+                break;
             default:
                 std::cout << "Invalid Choice" << std:: endl; 
     
@@ -491,7 +466,7 @@ int main()
     }
     FlowscriptInterpreter* interpreter = new FlowscriptInterpreter(syst); 
     // interpreter->interpret(syst->finishJob(scriptWrite).first);
-   interpreter->interpret(flowFile);
+    interpreter->interpret(flowFile);
     // interpreter->interpret("Code/Flowscript/FunctionCall.md");
    //interpreter->interpret("Code/Flowscript/restfix.md");
     return 0;
