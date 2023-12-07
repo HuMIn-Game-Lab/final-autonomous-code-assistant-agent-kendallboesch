@@ -2,7 +2,7 @@ lib:
 		clang++ -std=c++14 -shared -o ./Code/jobsystem/libjobsystem.so -fPIC ./Code/jobsystem/*.cpp -pthreads
 
 build:
-		clang++ -std=c++14 -o output Code/*.cpp -L./Code/jobsystem -ljobsystem 
+		clang++ -std=c++14 -o output Code/main.cpp Code/FlowscriptInterpreter.cpp -L./Code/jobsystem -ljobsystem 
 		
 compile: 
 		make lib
@@ -18,12 +18,15 @@ demoerror:
 typeerror: 
 		clang++ -std=c++14 -o output Code/toCompile/typeerror.cpp
 syntaxerror:
-		clang++ -std=c++14 -o output Code/toCompile/syntaxError.cpp
+		clang++ -std=c++14 -o output Code/toCompile/syntaxerror.cpp
+
+oneerrorsimple:
+		clang++ -std=c++14 -o output Code/toCompile/oneerrorsimple.cpp
 
 errorreset:
 		rm -r errors.json
 		rm -r fixedErrors.json
 
 convowrite:
-		clang++ -std=c++14 -o out Code/convoHander.cpp 
+		clang++ -std=c++14 -o out Code/convoHandler.cpp 
 		./out
