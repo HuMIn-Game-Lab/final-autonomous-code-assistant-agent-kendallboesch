@@ -282,6 +282,7 @@ int main()
         }
         else 
         {
+
             std::cerr << "Error opening the file" << std::endl; 
             input["success"]="false"; 
         }
@@ -289,19 +290,29 @@ int main()
         for (auto& entry : data.items())
         {
             //std::cout << "in for(auto& entry)" << std::endl;
-            const std::string& fPath = entry.key(); 
+            std::string fPath = entry.key(); 
             const json& errorArray = entry.value(); 
             std::vector<std::pair<int, std::string>> fixes; 
-
+            std::string fileBackup = ""; 
             for(const auto& error: errorArray)
             {
                 int strLineNum = error["lineNum"];
                 fixes.push_back(std::make_pair(strLineNum,error["srcResolved"])); 
                 std::cout << "srcResolved: " << error["srcResolved"] << std::endl; 
+                fileBackup = error["file"]; 
             }
-
+            if (fPath != fileBackup)
+            {
+                fPath = fileBackup;
+                std::cout << "Switch" << std::endl; 
+            }
             //std::fstream cppfile(fPath, std::ios::in | std::ios::out);
             std::ifstream cppfile(fPath);
+            if(!cppfile.is_open())
+            {
+                fPath = fileBackup;
+                cppfile.open(fileBackup); 
+            }
             if(cppfile.is_open())
             {
                 std::cout << "CPP file is open" << std::endl; 
@@ -327,17 +338,25 @@ int main()
                 std::ofstream resolvedcpp(fPath);
                 if(resolvedcpp.is_open())
                 {
+                    std::cout << "IS open" << std::endl;
+                    std::cout << newcpp.size() << std:: endl; 
                     for(int line = 0; line < newcpp.size(); line++)
                     {
+                        std::cout << "line: " << line << std::endl; 
                         resolvedcpp << newcpp[line] << std::endl; 
                     }
                 }
                 else{
                     std::cout << "Failed to resolve cpp" << std::endl;
                 }
+                std::cout << "OUT" << std::endl; 
                 resolvedcpp.close();
                 int offset = strlen("Code/toCompile/"); 
+                std::cout << "fPath: " << fPath << std::endl; 
+                std::cout << "Path size: " << fPath.size() << std::endl; 
+                std::cout << "offset size: " << offset << std:: endl; 
                 std::string target = fPath.substr(offset, fPath.size() - offset - 4);
+                std::cout << "Target: " << target << std::endl; 
 
                 jobOutput.append(target);
                // jobOutput.append(" ");
@@ -347,6 +366,7 @@ int main()
 
             }
             else{
+                std::cout << "failed to open cpp";
                 input["success"]="false";
             }
         }
@@ -395,7 +415,16 @@ int main()
         {"success", ""}
 
     };
+    
+    json compJob2 {
+        {"identifier", "compile"},
+        {"inputId","oneerrorsimple"},
+        {"inputData","oneerrorsimple"},
+        {"output",""},
+        {"success",""}
 
+    };
+    syst->loadInput(compJob2); 
     syst->loadInput(compJob);
     syst->loadInput(restJob);
 
