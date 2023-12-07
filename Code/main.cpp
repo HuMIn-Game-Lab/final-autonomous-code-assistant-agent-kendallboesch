@@ -317,9 +317,9 @@ int main()
                 //cppfile.close(); 
                 for(int e = 0; e < fixes.size(); e++)
                 {
-                    std::cout << "OLD: " << newcpp[fixes[e].first] << std::endl; 
-                    newcpp[fixes[e].first] = fixes[e].second; 
-                    std::cout << "NEW: " << newcpp[fixes[e].first] << std::endl;  
+                    std::cout << "OLD: " << newcpp[fixes[e].first - 1] << std::endl; 
+                    newcpp[fixes[e].first - 1] = fixes[e].second; 
+                    std::cout << "NEW: " << newcpp[fixes[e].first - 1] << std::endl;  
                 }
                 
                 //cppfile.seekg(0, std::ios::beg);
