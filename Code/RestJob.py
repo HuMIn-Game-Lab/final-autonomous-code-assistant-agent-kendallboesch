@@ -6,7 +6,7 @@ import json
 import seaborn as sns
 
 
-
+# instruction = 'errorsolve'
 # openai.api_base="http://localhost:4891/v1"
 # promptFile = 'errors.json'
 
