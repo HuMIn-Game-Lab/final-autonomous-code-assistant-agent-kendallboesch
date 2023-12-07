@@ -8,7 +8,7 @@
 */
 FlowscriptInterpreter::FlowscriptInterpreter(JobSystem* jobsystem) : syst(jobsystem)
 {   
-    this->keywords = { "digraph", "subgraph", "label", "shape", "true", "false", "point"};
+    this->keywords = { "digraph", "subgraph", "label", "shape", "true", "false", "point", "none"};
     std::vector<std::string> jobTypes = syst->getAllJobTypes(); 
     for(int i = 0; i < jobTypes.size(); i++)
     {
@@ -55,7 +55,7 @@ bool FlowscriptInterpreter::lexicalAnalysis(const std::string flowFile)
             std::string line = p.first; 
             int linePos = p.second; 
 
-            if(line[0] != '{' && line[0] != '}' && !isalpha(line[0]))
+            if(line[0] != '{' && line[0] != '}' && !isalpha(line[0]) && line[0] != ' ')
             {
                 // std::string error =  "Parse Error: [line: ";
                 // error.append(line);
@@ -285,9 +285,12 @@ bool FlowscriptInterpreter::interpret(std::string scriptFile)
     bool lex = this->lexicalAnalysis(scriptFile); 
     if(lex)
     {
+        std::cout << "Lexical Analysis complete" << std::endl; 
         bool syn = syntacticalAnalysis();
         if(syn)
         {
+            std::cout << "Syntactical Analysis Complete" << std::endl;
+            std::cout << "Building flow..." << std::endl; 
             this->buildFlow();  
         }
         
@@ -451,7 +454,7 @@ bool FlowscriptInterpreter::syntacticalAnalysis()
                             if(itr->second[2].tokenValue == keywords[LABEL])
                             {   
                                 // if the label value is a job type
-                                if(isKeyword(itr->second[4].tokenValue) > 6)
+                                if(isKeyword(itr->second[4].tokenValue) > 7)
                                 {
                                     // is dependency job 
                                     programStatements.push_back({DEPENDENT_JOB,tokens.find(lineNum)->second}); 
@@ -483,6 +486,12 @@ bool FlowscriptInterpreter::syntacticalAnalysis()
                                     programStatements.push_back({END_POINT,tokens.find(lineNum)->second}); 
                                     identifiers.push_back(itr->second[0].tokenValue); 
 
+                                }
+                                else if(itr->second[4].tokenValue == keywords[NONE])
+                                {
+                                    programStatements.push_back({START_POINT,tokens.find(lineNum)->second}); 
+                                    identifiers.push_back(itr->second[0].tokenValue);
+                                    this->start_id = itr->second[0].tokenValue;
                                 }
                                 else
                                 {
@@ -545,6 +554,10 @@ bool FlowscriptInterpreter::syntacticalAnalysis()
 
                                 // check if the dependent job exists as a key in the depenency map
                                 auto depItr = dependencies.find(itr->second[2].tokenValue); 
+                                if(itr->second[0].tokenValue == start_id)
+                                {
+                                    this->job0 = itr->second[2].tokenValue; 
+                                }
                                 if(depItr == dependencies.end())
                                 {   
                                     // insert dependent job ID in dependency map 
@@ -567,6 +580,7 @@ bool FlowscriptInterpreter::syntacticalAnalysis()
                                             // the flow builder identifies the starting job 
                                    dependencies.insert({itr->second[0].tokenValue, {}}); 
                                 }
+
 
                                 auto orderItr = executionDetails.find(itr->second[0].tokenValue); 
                                 if(orderItr == executionDetails.end())
@@ -756,6 +770,8 @@ void FlowscriptInterpreter::setSyntaxMap()
                                     {IDENTIFIER, OPERATOR, IDENTIFIER, BRACKET, KEYWORD, OPERATOR, KEYWORD, BRACKET, TERMINATOR }});
     validSyntax.insert({BLOCK_BOUND,
                                     {BLOCK}});
+    validSyntax.insert({START_POINT,
+                                    {IDENTIFIER, BRACKET, KEYWORD, OPERATOR, KEYWORD, BRACKET, TERMINATOR}});
 }
 
 std::vector<FlowscriptInterpreter::LexToken> FlowscriptInterpreter::toLexToken(std::vector<Token> asStruct )
@@ -781,17 +797,32 @@ bool FlowscriptInterpreter::getEndID()
    } 
    return false; 
 }
-
+bool FlowscriptInterpreter::getStartID()
+{
+   for(int i = 0; i < programStatements.size(); i++)
+   {
+        if(programStatements[i].first == START_POINT)
+        {
+            this->start_id = programStatements[i].second[0].tokenValue; 
+            return true;
+        }
+   } 
+   return false; 
+}
 void FlowscriptInterpreter::buildFlow()
 {
+    std::cout << "in build" << std::endl;
     //std::vector<Token> jobToks;
     // = getJobTokens(getParentJob());
+
     getEndID();
     std::string jobid;
     std::vector<Token> jobToks; 
+    std::cout << "start: " << job0  << std::endl;
+
 
     // get the initial job for the process
-    jobToks = jobs.find(getParentJob())->second;
+    jobToks = jobs.find(job0)->second;
     std::string inputId = jobToks[4].tokenValue; //get job input 
 
     // get the preloaded json input
@@ -879,17 +910,5 @@ void FlowscriptInterpreter::buildFlow()
 
 std::string FlowscriptInterpreter::getParentJob()
 {
-    auto itr = dependencies.begin(); 
-    while(itr != dependencies.end())
-    {
-        if (itr->second.size() == 0)
-        {
-            return itr->first; 
-        }
-        itr++; 
-    }
-
-    std::cout << "Could not find parent job" << std::endl; 
-    return ""; 
-
+    return job0; 
 }

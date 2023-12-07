@@ -1,4 +1,4 @@
-#pragma once
+    #pragma once
 #include <iostream> 
 #include <string>
 #include <vector>
@@ -34,7 +34,8 @@ class FlowscriptInterpreter
         SHAPE,
         TRUE,
         FALSE,
-        POINT
+        POINT,
+        NONE
     };
     enum Operator
     {
@@ -58,6 +59,7 @@ class FlowscriptInterpreter
         END_POINT,
         EXECUTIONAL_DEPENDENCY,
         CONDIITONAL_DEPENDENCY,
+        START_POINT
     };
     public: 
         FlowscriptInterpreter(JobSystem* jobsystem);         
@@ -96,6 +98,8 @@ class FlowscriptInterpreter
         std::vector<std::pair<SynToken, std::vector<Token>>> getAllDependencies(); 
         std::map<std::string, JobLogic> executionDetails; 
         std::string end_id;
+        std::string start_id;
+        std::string job0;
     // Private functions
         bool lexicalAnalysis(const std::string flowscriptFile);
         bool syntacticalAnalysis(); 
@@ -121,6 +125,7 @@ class FlowscriptInterpreter
         bool checkProcessFlow();
         bool createAllJobs();
         bool getEndID(); 
+        bool getStartID();
         std::string getParentJob(); 
         std::vector<Token> getJobTokens(std::string);
 
