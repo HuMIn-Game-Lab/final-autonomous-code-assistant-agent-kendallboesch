@@ -1,6 +1,5 @@
 {
     "configurations": [
-        
         {
             "name": "(lldb) Launch",
             "type": "cppdbg",
