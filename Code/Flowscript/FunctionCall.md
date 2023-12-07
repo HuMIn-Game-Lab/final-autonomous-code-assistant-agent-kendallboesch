@@ -2,7 +2,7 @@ digraph functionCall {
     subgraph cluster1 
     { 
         Y[shape=none];
-        A[label=demoerror]; 
+        A[label=syntaxerror]; 
         B[label=errorparse]; 
         C[label=resterror]; 
         D[label=coderepair];

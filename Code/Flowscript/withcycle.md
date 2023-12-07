@@ -3,7 +3,7 @@ digraph functionCall {
     { 
         Y[shape=none];
 
-        A[label=demoerror]; 
+        A[label=oneerrorsimple]; 
         B[label=errorparse]; 
         C[label=resterror]; 
         D[label=coderepair];
