@@ -1,0 +1,1 @@
+Create a Flowscript script that creates a compile job. If the compile job fails, an errorparse job is created and run, then a show job is run, then the process exits. If the compile job does not fail, a show job is created and run, then the process exits.
