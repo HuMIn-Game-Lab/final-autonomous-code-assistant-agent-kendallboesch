@@ -10,6 +10,7 @@
 
 int main()
 {
-    std::cout << "in demoerror.cpp" << endl;
-    return 0
+std::cout << "in demoerror.cpp" << std::endl;
+return 0;
 }
+
