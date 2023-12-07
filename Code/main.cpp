@@ -297,6 +297,18 @@ int main()
             for(const auto& error: errorArray)
             {
                 int strLineNum = error["lineNum"];
+                std::string nsrc = error["srcResolved"];
+                if(nsrc == "")
+                {
+                    if(error.find("src") != error.end())
+                    {
+                        nsrc = error["src"];
+                    }
+                    else
+                    {
+                        std::cout << "NO SOURCE CODE" << std::endl; 
+                    }
+                }
                 fixes.push_back(std::make_pair(strLineNum,error["srcResolved"])); 
                 std::cout << "srcResolved: " << error["srcResolved"] << std::endl; 
                 fileBackup = error["file"]; 
@@ -424,6 +436,23 @@ int main()
         {"success",""}
 
     };
+     json compJob3 {
+        {"identifier", "compile"},
+        {"inputId","syntaxerror"},
+        {"inputData","syntaxerror"},
+        {"output",""},
+        {"success",""}
+
+    };
+       json compJob {
+        {"identifier", "compile"},
+        {"inputId","syntaxerror"},
+        {"inputData","syntaxerror"},
+        {"output",""},
+        {"success",""}
+
+    };
+    syst->loadInput(compJob3);
     syst->loadInput(compJob2); 
     syst->loadInput(compJob);
     syst->loadInput(restJob);
