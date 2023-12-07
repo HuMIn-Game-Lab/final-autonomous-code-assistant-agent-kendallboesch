@@ -287,47 +287,93 @@ int main()
 
         for (auto& entry : data.items())
         {
+            std::cout << "in for(auto& entry)" << std::endl;
             const std::string& fPath = entry.key(); 
             const json& errorArray = entry.value(); 
             std::vector<std::pair<int, std::string>> fixes; 
+
             for(const auto& error: errorArray)
             {
-                std::string strLineNum = error["lineNum"];
-                fixes.push_back(std::make_pair(std::stoi(strLineNum),error["srcResolved"])); 
+                int strLineNum = error["lineNum"];
+                fixes.push_back(std::make_pair(strLineNum,error["srcResolved"])); 
+                std::cout << "srcResolved: " << error["srcResolved"] << std::endl; 
             }
 
-            std::fstream cppfile(fPath, std::ios::in | std::ios::out);
+            //std::fstream cppfile(fPath, std::ios::in | std::ios::out);
+            std::ifstream cppfile(fPath);
             if(cppfile.is_open())
             {
+                std::cout << "CPP file is open" << std::endl; 
                 int currentLine = 0; 
-
-                for( int i = 0; i < fixes.size(); i++)
+                std::vector<std::string> newcpp; 
+                while(!cppfile.eof())
                 {
-                    int lineNum = fixes[i].first; 
-                    std::string fix = fixes[i].second;
-                    std::string old = "";
-                    while(currentLine <= lineNum)
+                    std::string src = ""; 
+                    std::getline(cppfile,src); 
+                    newcpp.push_back(src); 
+
+                }
+                cppfile.close();
+                //cppfile.close(); 
+                for(int e = 0; e < fixes.size(); e++)
+                {
+                    std::cout << "OLD: " << newcpp[fixes[e].first] << std::endl; 
+                    newcpp[fixes[e].first] = fixes[e].second; 
+                    std::cout << "NEW: " << newcpp[fixes[e].first] << std::endl;  
+                }
+                
+                //cppfile.seekg(0, std::ios::beg);
+                std::ofstream resolvedcpp(fPath);
+                if(resolvedcpp.is_open())
+                {
+                    for(int line = 0; line < newcpp.size(); line++)
                     {
-                        std::getline(cppfile,old);
-                        if(currentLine == lineNum)
-                        {
-                            cppfile << fix <<std::endl; 
-                        }
+                        resolvedcpp << newcpp[line] << std::endl; 
                     }
                 }
-            input["success"] = true; 
-            std::string target = fPath;
-            while(target.find("/") != std::string::npos)
-            {
-                target = target.substr(target.find("/") + 1); 
-            }
-            input["output"] = target;
+                else{
+                    std::cout << "Failed to resolve cpp" << std::endl;
+                }
+                resolvedcpp.close();
+           //     // for( int i = 0; i < fixes.size(); i++)
+                // {
+                //     int errorLine = fixes[i].first; 
+                //     std::string fix = fixes[i].second;
+                    
+                //     bool searching = true; 
+
+                //     while(searching)
+                //     {
+                //         std::string old = "";
+
+                //         std::getline(cppfile,old); 
+                //         if(currentLine != errorLine)
+                //         {
+                //             newcpp.push_back(old); 
+                //         } 
+                //         else
+                //         {
+                //             newcpp.push_back(fix);
+                //             if(!cppfile.eof()){currentLine++;}
+                //             searching = false; 
+                //         }
+                //         if(!cppfile.eof()){currentLine++;}
+                //     }
+
+                // }
+                // input["success"] = "true"; 
+                // std::string target = fPath;
+                // while(target.find("/") != std::string::npos)
+                // {
+                //     target = target.substr(target.find("/") + 1); 
+                // }
+                // input["output"] = target;
 
             }
-            else
-            {
-                input["success"]="false";
-            }
+            // else
+            // {
+            //     input["success"]="false";
+            // }
 
 
         }
@@ -394,7 +440,7 @@ int main()
     {
         {"identifier", "coderepair"},
         {"inputId","testcodefix"},
-        {"inputData", "file: python3 ./Code/RestJob.py errorsolve http://localhost:4891/v1 errors.json\nfixedErrors.json"},
+        {"inputData", "fixedErrors.json"},
         {"output",""},
         {"success",""}
     }; 
@@ -419,6 +465,7 @@ int main()
        std::string input;
        std::getline(std::cin, input); 
         int ui = std::stoi(input);
+    // int ui = 2; 
         
 
     
