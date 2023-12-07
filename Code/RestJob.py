@@ -24,12 +24,12 @@ if instruction == 'errorsolve':
     data =json.load(file)
 
     inputFormat = "{\n{\'colNum\' : #}, \n {\'errorMessage\': \'\'},\n{\'file\': \'\'},\n{\'lineNum\': #},\n{\'nextLine\':\'\'},\n{\'previousLine\':\'\'},\n{\'resDescr\': \'\'},\n{\'src\': \'\'},\n{\'srcResolved\': \'\'}\n}\n"
-    erRes = "{\"colNum\" : #}, \n {\"errorMessage\": \"\"},\n{\"file\": \"\"},\n{\"lineNum\": #},\n{\"nextLine\":\"\"},\n{\"previousLine\":\"\"},\n{\"resDescr\": \"\"},\n{\"src\": \"\"},\n{\"srcResolved\": \"\"}\n"
+    erRes = "{\"colNum\" : #, \n \"errorMessage\": \"\",\n\"file\": \"\",\n\"lineNum\": #,\n\"nextLine\":\"\",\n\"previousLine\":\"\",\n\"resDescr\": \"\",\n\"src\": \"\",\n\"srcResolved\": \"\"}\n"
     basePrompt=f"This is the format of an error object:\n {inputFormat}\n"
     instruction="For each error object given, provide the resolved C++ code in the \'srcResolved\' member, and provide a description of the fix in the \'resDescr\' member.\n Leave the incorrect code in the 'src' member.\n"
-    details="\'srcResolved\' should only contain valid c++ code. Replace \"path/to/file.cpp\" with the \'file\' memeber in the error object.\n "
+    details="\'srcResolved\' should only contain valid c++ code. Replace \"file.cpp\" with the \'file\' memeber in the error object.\n "
     noPrompt = f"\nDo not prompt your response.\n"
-    responseFormatOpen = "{\n\"path/to/file.cpp\": [\n"
+    responseFormatOpen = "{\n\"file.cpp\": [\n"
     responseFormatClose = "\n]\n}\n"
     responseformat = f"Your response should be in the following valid json format:\n{responseFormatOpen}{erRes},{erRes}{responseFormatClose}"
     file.close()
