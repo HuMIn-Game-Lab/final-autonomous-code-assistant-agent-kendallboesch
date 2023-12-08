@@ -1,0 +1,82 @@
+Flowscript is a simple custom DSL for building process flows. FLowscript specifics are provided below:
+
+Keywords: "digraph", "subgraph", "label", "shape", "true", "false", "point", "none" 
+Job Types: "compile", "errorparse", "rest", "coderepair", "show", "test"
+
+Lexical Tokens: 
+1. KEYWORD - any of the words in the keywords list OR the job types list
+2. IDENTIFIER - names for the jobs 
+3. OPERATOR - "=" or "->"
+    (a) = operator is used to assign values to "label" & "shape"
+    (b) -> operator is used to indicate the job before the operator must finish before the job after the operator can execute
+4. BRACKET - "[" or "]"
+5. BLOCK - "{" or "}"
+6. TERMINATOR - ";"
+    (a) every line except for BLOCK_TITLEs and BLOCK_BOUNDS must be concluded with a TERMINATOR
+
+
+Valid Syntax: 
+
+1. BLOCK_TITLE : {KEYWORD, IDENTIFIER}
+2. DEPENDENT_JOB : {IDENTIFIER, BRACKET, KEYWORD, OPERATOR, KEYWORD, BRACKET, TERMINATOR}
+3. UI_JOB : {IDENTIFIER, BRACKET, KEYWORD, OPERATOR, IDENTIFIER, BRACKET, TERMINATOR}
+4. END_POINT : {IDENTIFIER, BRACKET, KEYWORD, OPERATOR, KEYWORD, BRACKET, TERMINATOR}
+    (a) required to indicate process end point
+5. EXECUTIONAL_DEPENDENCY : {IDENTIFIER, OPERATOR, IDENTIFIER, TERMINATOR} 
+6. CONDIITONAL_DEPENDENCY : {IDENTIFIER, OPERATOR, IDENTIFIER, BRACKET, KEYWORD, OPERATOR, KEYWORD, BRACKET, TERMINATOR }
+    (a) dependency labels can only be assigned to true or false 
+        - success is "true"
+        - fail is "false"
+    (b) any job that has a conditional dependency is required to have a both a job to execute if true and if false
+7. BLOCK_BOUND : {BLOCK}
+8. START_POINT : {IDENTIFIER, BRACKET, KEYWORD, OPERATOR, KEYWORD, BRACKET, TERMINATOR}
+    (a) required to indicate the first job in the process
+
+
+In this example: 
+Job A is created with input "demo" 
+if Job A is successful, the process ends and no other jobs are created or executed. 
+If job A fails, an errorparse job, job B is created. 
+After Job B finishes, a show job, job C is created. 
+After Job C finishes the process is complete 
+
+
+
+```
+digraph exampleflow
+{
+subgraph clusterExample
+{
+start[shape=none];
+a[label=demo];
+b[label=errorparse];
+c[label=show]
+end[shape=point];
+start->a
+a->b[label=false];
+a->end[label=true];
+c->end;
+b->c;
+}
+}
+```
+This example follows the following syntaxtical format:
+<BLOCK_TITLE>
+<BLOCK_BOUND>
+<BLOCK_TITLE>
+<BLOCK_BOUND>
+<START_POINT>
+<UI_JOB>
+<DEPENDENT_JOB>
+<DEPENDENT_JOB>
+<END_POINT>
+<EXECUTIONAL_DEPENDENCY>
+<CONDIITONAL_DEPENDENCY>
+<CONDIITONAL_DEPENDENCY>
+<EXECUTIONAL_DEPENDENCY>
+<EXECUTIONAL_DEPENDENCY>
+
+-------
+
+There should be an equal amount of true and false dependencies
+Your task is to generate the Flowscript script for the following process flow:
