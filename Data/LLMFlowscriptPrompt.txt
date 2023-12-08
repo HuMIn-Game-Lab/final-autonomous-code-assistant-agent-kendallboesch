@@ -5,6 +5,5 @@ If A fails , create an errorparse job, job B
 After job B finishes, create job C with input "restjob"
 Affter job C finishes, create a coderepair job, job D
 If job D is successful, job A executes again
-if Job D fails, the process ends
+if Job D fails, the process ends and no other jobs are created
 
-There should be 4 jobs total, one start point, and one end point 
