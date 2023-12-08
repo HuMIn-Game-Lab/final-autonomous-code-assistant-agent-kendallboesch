@@ -425,7 +425,7 @@ bool FlowscriptInterpreter::syntacticalAnalysis()
                     else
                     {
                         // invalid key word
-                        std::cout << "Syntax Error: [line: " << lineNum << ", position: " << itr->second[0].cStart << "]\n\tExpected open brace" << std::endl;  
+                        std::cout << "Syntax Error: [line: " << lineNum+1 << ", position: " << itr->second[0].cStart << "]\n\tExpected open brace" << std::endl;  
                         errors = true;
                     }
 
