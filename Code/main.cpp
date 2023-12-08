@@ -239,18 +239,40 @@ int main()
     // register job type 'scriptwrite'
     syst->registerJobType("scriptwrite",[](json& input)
     {
-        std::string scriptfile = "Code/Flowscript/";
-        scriptfile.append(input["inputId"]);
-        scriptfile.append(".md"); 
-
-        std::ofstream outFS(scriptfile); 
-        std::string data = input["inputData"];
-        std::istringstream iss(data);
-        std::string line;
-        while(std::getline(iss,line))
+        std::cout << "In scriptwrite job" << std::endl; 
+        std::string scriptfile = input["inputData"];
+        std::ifstream in(scriptfile);
+        std::vector<std::string> lines; 
+        int truecount, falsecount = 0; 
+        while(!in.eof())
         {
-            outFS << line << std::endl; 
+            std::string l = "";
+            std::getline(in,l);
+            if(l.find("```") == std::string::npos && l != "")
+            {
+                if(l.find("true") != std::string::npos)
+                {
+                    truecount++;
+                }
+                else if(l.find("false") != std::string::npos)
+                {
+                    falsecount++;
+                }
+                lines.push_back(l);
+            }
         }
+        in.close(); 
+        if(truecount != falsecount)
+        {
+            input["success"]= "false";
+            input["inputData"] = "failed";
+            return; 
+        }
+        std::ofstream outFS(scriptfile); 
+        for(int i = 0; i < lines.size(); i++)
+        {
+            outFS << lines[i] << std::endl; 
+        }        
         outFS.close();
         input["success"] = "true";
         input["output"] = scriptfile; 
@@ -319,13 +341,13 @@ int main()
                     }
                 }
                 fixes.push_back(std::make_pair(strLineNum,nsrc)); 
-                std::cout << "srcResolved: " << nsrc << std::endl; 
+                // std::cout << "srcResolved: " << nsrc << std::endl; 
                 fileBackup = error["file"]; 
             }
             if (fPath != fileBackup && !failed)
             {
                 fPath = fileBackup;
-                std::cout << "Switch" << std::endl; 
+                // std::cout << "Switch" << std::endl; 
             }
             //std::fstream cppfile(fPath, std::ios::in | std::ios::out);
             std::ifstream cppfile(fPath);
@@ -359,11 +381,11 @@ int main()
                 std::ofstream resolvedcpp(fPath);
                 if(resolvedcpp.is_open())
                 {
-                    std::cout << "IS open" << std::endl;
+                    // std::cout << "IS open" << std::endl;
                     std::cout << newcpp.size() << std:: endl; 
                     for(int line = 0; line < newcpp.size(); line++)
                     {
-                        std::cout << "line: " << line << std::endl; 
+                        // std::cout << "line: " << line << std::endl; 
                         resolvedcpp << newcpp[line] << std::endl; 
                     }
                 }
@@ -373,7 +395,7 @@ int main()
                 std::cout << "OUT" << std::endl; 
                 resolvedcpp.close();
                 int offset = strlen("Code/toCompile/"); 
-                std::cout << "fPath: " << fPath << std::endl; 
+                // std::cout << "fPath: " << fPath << std::endl; 
                 // std::cout << "Path size: " << fPath.size() << std::endl; 
                 // std::cout << "offset size: " << offset << std:: endl; 
                 std::string target = fPath.substr(offset, fPath.size() - offset - 4);
@@ -423,7 +445,7 @@ int main()
 
         {"identifier","rest"},
         {"inputId", "flowgen"},
-        {"inputData", "ARGS=\"flowgen http://localhost:4891/v1 LLMFlowscriptPrompt.txt\""},
+        {"inputData", "ARGS=\"flowgen http://localhost:4891/v1 Data/LLMFlowscriptPrompt.txt\""},
         {"output", ""}, 
         {"success", ""}
 
@@ -431,7 +453,7 @@ int main()
     json restJob {
 
         {"identifier","rest"},
-        {"inputId", "resterror"},
+        {"inputId", "restjob"},
         {"inputData", "ARGS=\"errorsolve http://localhost:4891/v1 errors.json\""},
         {"output", ""}, 
         {"success", ""}
@@ -471,7 +493,7 @@ int main()
     json writeScriptJob 
     {
         {"identifier", "scriptwrite"},
-        {"inputId", "script1"},
+        {"inputId", "script"},
         {"inputData",""}, 
         {"output",""},
         {"success",""}
@@ -488,54 +510,73 @@ int main()
     syst->loadInput(testCodeFix);
 
    // syst->getAllJobTypes();
+   bool gettingScript = true;
+   std::string script = "";
 // WILL BE IN FINAL SUBMIT - taking out for now
-    // Job* scriptGeneration = syst->createJob(flowscriptGenerationJob);
-    // syst->queueJob(scriptGeneration); 
-    // std::pair<std::string,std::string> scriptGenReturn = syst->finishJob(scriptGeneration);
+    while(gettingScript)
+    {
+        Job* scriptGeneration = syst->createJob(flowscriptGenerationJob);
+        syst->queueJob(scriptGeneration); 
+        std::pair<std::string,std::string> scriptGenReturn = syst->finishJob(scriptGeneration);
+        writeScriptJob["inputData"] = scriptGenReturn.first;
+        Job* scriptfix = syst->createJob(writeScriptJob); 
+        syst->queueJob(scriptfix);
+        std::pair<std::string,std::string> res =syst->finishJob(scriptfix);
+        if(res.second == "true")
+        {
+            script = res.first; 
+            gettingScript = false; 
+        }
+    }
+    
+    
+
+    FlowscriptInterpreter* interpreter = new FlowscriptInterpreter(syst);
+    interpreter->interpret(script);
 
     //writeScriptJob['inputData'] = scriptGenReturn.first; 
     // Job* scriptWrite = syst->createJob(writeScriptJob); 
     // syst->queueJob(scriptWrite);
 
-    bool validUI = false; 
-    std::string flowFile = ""; 
-    while(!validUI)
-    {
-        std::cout << "pick flowscript file:\n\t1 - functioncall.md\n\t2 - codefixcheck.md\n\t3 - restfix.md\n4 - withcycle.md\n\n"; 
-       std::string input;
-       std::getline(std::cin, input); 
-        int ui = std::stoi(input);
-    // int ui = 2; 
+    // bool validUI = false; 
+    // std::string flowFile = ""; 
+    // while(!validUI)
+    // {
+    //     std::cout << "pick flowscript file:\n\t1 - functioncall.md\n\t2 - codefixcheck.md\n\t3 - restfix.md\n4 - withcycle.md\n\n"; 
+    //    std::string input;
+    //    std::getline(std::cin, input); 
+    //     int ui = std::stoi(input);
+    // // int ui = 2; 
         
 
     
         
-        switch(ui)
-        {
-            case 1:
-                flowFile = "Code/Flowscript/FunctionCall.md";
-                validUI = true;
-                break;
-            case 2: 
-                flowFile = "Code/Flowscript/codefixcheck.md";
-                validUI = true;
-                break;
-            case 3: 
-                flowFile = "Code/Flowscript/restfix.md";
-                validUI = true;
-                break;
-            case 4:
-                flowFile = "Code/Flowscript/withcycle.md";
-                validUI = true; 
-                break;
-            default:
-                std::cout << "Invalid Choice" << std:: endl; 
+    //     switch(ui)
+    //     {
+    //         case 1:
+    //             flowFile = "Code/Flowscript/FunctionCall.md";
+    //             validUI = true;
+    //             break;
+    //         case 2: 
+    //             flowFile = "Code/Flowscript/codefixcheck.md";
+    //             validUI = true;
+    //             break;
+    //         case 3: 
+    //             flowFile = "Code/Flowscript/restfix.md";
+    //             validUI = true;
+    //             break;
+    //         case 4:
+    //             flowFile = "Code/Flowscript/withcycle.md";
+    //             validUI = true; 
+    //             break;
+    //         default:
+    //             std::cout << "Invalid Choice" << std:: endl; 
     
-        };
-    }
-    FlowscriptInterpreter* interpreter = new FlowscriptInterpreter(syst); 
-    // interpreter->interpret(syst->finishJob(scriptWrite).first);
-    interpreter->interpret(flowFile);
+    //     };
+    // }
+    // FlowscriptInterpreter* interpreter = new FlowscriptInterpreter(syst); 
+    // // interpreter->interpret(syst->finishJob(scriptWrite).first);
+    // interpreter->interpret(flowFile);
     // interpreter->interpret("Code/Flowscript/FunctionCall.md");
    //interpreter->interpret("Code/Flowscript/restfix.md");
     return 0;
