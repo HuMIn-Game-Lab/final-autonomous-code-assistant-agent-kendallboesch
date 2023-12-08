@@ -1,1 +1,10 @@
-Create a Flowscript script that creates a compile job. If the compile job fails, an errorparse job is created and run, then a show job is run, then the process exits. If the compile job does not fail, a show job is created and run, then the process exits.
+
+Create job A with input "demoerror" 
+If job A is successful, the process ends and no other jobs should be created or executed
+If A fails , create an errorparse job, job B 
+After job B finishes, create job C with input "restjob"
+Affter job C finishes, create a coderepair job, job D
+If job D is successful, job A executes again
+if Job D fails, the process ends
+
+There should be 4 jobs total, one start point, and one end point 
