@@ -1,0 +1,25 @@
+
+{
+"Code/toCompile/demoerror.cpp": [
+{
+"colNum": 40,
+"errorMessage": "error: use of undeclared identifier 'endl'; did you mean 'std::endl'?",
+"file": "Code/toCompile/demoerror.cpp",
+"lineNum": 13,
+"nextLine": "    return 0",
+"previousLine": "{",
+"resDescr": "Replace the use of endl with std::endl.",
+"srcResolved": "    std::cout << \"in demoerror.cpp\" << std::endl;"
+},
+{
+"colNum": 13,
+"errorMessage": "error: expected ';' after return statement",
+"file": "Code/toCompile/demoerror.cpp",
+"lineNum": 14,
+"nextLine": "",
+"previousLine": "    std::cout << \"in demoerror.cpp\" << std::endl;",
+"resDescr": "Add a semicolon after the return statement.",
+"srcResolved": "    return 0;"
+}
+]
+}
