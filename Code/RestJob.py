@@ -41,16 +41,13 @@ if instruction == 'errorsolve':
     else: 
         write = []
     
-    if os.path.exists('fixedErrors.json'):
-      with open('fixedErrors.json') as outFile:
-        try:
-            # Try to load the JSON data
-            writer = json.load(outFile)
-        except json.decoder.JSONDecodeError:
-            # Handle the case where the file is empty or not in a valid JSON format
-           writer = []
-    else:
-        writer = []
+    # appending = False
+    # if os.path.exists('errorhistory.json'):
+    #   with open('errorhistory.json', 'r') as outFile:
+    #     writer = json.load(outFile)
+    #     appending = True
+    # else:
+    #     writer = []
 
     for file, errors in data.items():
         # print(f"File: {file}")
@@ -72,23 +69,36 @@ if instruction == 'errorsolve':
             echo=True,
             stream=False
         )
-        # print(response['choices'][0]['text'])
+        
         text = response['choices'][0]['text']
         LLMresponse = text[len(prompt):]
+        
         lowerLLMres = LLMresponse.lower()
         if lowerLLMres.find('```json\n') != -1:
             print('had ```json\n\n')
             LLMresponse = LLMresponse[8:]
             LLMresponse = LLMresponse[:-3]
-        # print(LLMresponse)
+
+        # LLMResAppend = LLMresponse
         
-        writer.append(LLMresponse)
+        # if appending:
+        #     LLMResAppend = LLMresponse[1:-1]
+            
+        # js = json.loads(LLMResAppend)
+        # writer.append(js)
+        
         write.append(response)
     with open("Data/convo.json", 'w') as json_file:
         json.dump(write, json_file, indent=4)
-    with open('fixedErrors.json', 'w') as outFile:
-        outFile.write('\n'.join(map(str,writer)))
+    fixWriter = []
+    fixWriter.append(LLMresponse)
+    with open('fixedErrors.json', 'w') as out:
+        out.write('\n'.join(map(str,fixWriter)))
+        # json.dump(fixWriter, out, indent=4)
         # json.dump(writer, outFile, indent=4)
+    # with open('errorhistory.json', 'w') as outFile:
+    #     outFile.write('\n'.join(map(str,writer)))
+        
     print('fixedErrors.json')
     
 elif instruction == 'flowgen':
