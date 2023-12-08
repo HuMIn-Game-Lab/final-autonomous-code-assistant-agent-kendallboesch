@@ -1,21 +1,22 @@
-digraph functionCall { 
+digraph functionCall 
+{ 
     subgraph cluster1 
     { 
-        Y[shape=none];
+        start[shape=none];
 
-        A[label=oneerrorsimple]; 
-        B[label=errorparse]; 
-        C[label=resterror]; 
-        D[label=coderepair];
+        comp[label=syntaxerror]; 
+        ep[label=errorparse]; 
+        rst[label=resterror]; 
+        rp[label=coderepair];
         
 
-        X[shape=point];
-        Y->A;
-        A->B[label=false];
-        B->C;
-        C->D;
-        D->A[label=true];
-        D->X[label=false];
-        A->X[label=true];    
+        end[shape=point];
+        start->comp;
+        comp->ep[label=false];
+        ep->rst;
+        rst->rp;
+        rp->comp[label=true];
+        rp->end[label=false];
+        comp->end[label=true];    
     }   
 }
