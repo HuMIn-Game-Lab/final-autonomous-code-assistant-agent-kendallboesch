@@ -32,17 +32,13 @@ Valid Syntax:
 8. START_POINT : {IDENTIFIER, BRACKET, KEYWORD, OPERATOR, KEYWORD, BRACKET, TERMINATOR}
     (a) required to indicate the first job in the process
 
-
-In this example: 
-Job A is created with input "demo" 
-if Job A is successful, the process ends and no other jobs are created or executed. 
-If job A fails, an errorparse job, job B is created. 
-After Job B finishes, a show job, job C is created. 
-After Job C finishes the process is complete 
-
-
-
-```
+In this example:
+Job A is created with input "demo"
+if Job A is successful, the process ends and no other jobs are created or executed.
+If job A fails, an errorparse job, job B is created.
+After Job B finishes, a show job, job C is created.
+if Job c is successful, job A runs again
+if job C fails, the process ends and no other jobs are created
 digraph exampleflow
 {
 subgraph clusterExample
@@ -55,11 +51,11 @@ end[shape=point];
 start->a
 a->b[label=false];
 a->end[label=true];
-c->end;
 b->c;
+c->end[label=false];
+c->a[label=true];
 }
 }
-```
 This example follows the following syntaxtical format:
 <BLOCK_TITLE>
 <BLOCK_BOUND>
@@ -74,9 +70,13 @@ This example follows the following syntaxtical format:
 <CONDIITONAL_DEPENDENCY>
 <CONDIITONAL_DEPENDENCY>
 <EXECUTIONAL_DEPENDENCY>
-<EXECUTIONAL_DEPENDENCY>
-
+<CONDIITONAL_DEPENDENCY>
+<CONDIITONAL_DEPENDENCY>
 -------
 
-There should be an equal amount of true and false dependencies
+
+There should be an equal amount of true and false dependencies. Success dependencies should be labeled as "true", and failure depenencies should be labeled as false 
+
+any job that has a conditional dependency is required to have a both a job to execute if true and if false
+
 Your task is to generate the Flowscript script for the following process flow:
