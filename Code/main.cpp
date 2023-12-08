@@ -56,7 +56,8 @@ int main()
         std::cout << output << std::endl; 
 
     });
-    syst->registerJobType("rest",[](json& input){
+    syst->registerJobType("rest",[](json& input)
+    {
         std::cout << "in compile job execute" << std::endl; 
         std::array<char, 128> buffer; 
         std::string command = "make pyrest "; 
@@ -265,7 +266,7 @@ int main()
         // std::ifstream inFS("fixedErrors.json");
         json data; 
         std::string jobOutput = "";
-    
+        bool failed = false; 
         if(inFS.is_open())
         {
             try
@@ -276,6 +277,7 @@ int main()
             {
                 std::cerr << "Error parsing JSON: " << e.what() << std::endl; 
                 input["success"] = "false"; 
+                failed = true; 
             }
 
             // inFS.close(); 
@@ -285,6 +287,7 @@ int main()
 
             std::cerr << "Error opening the file" << std::endl; 
             input["success"]="false"; 
+            failed = true; 
         }
 
         for (auto& entry : data.items())
@@ -298,34 +301,40 @@ int main()
             {
                 int strLineNum = error["lineNum"];
                 std::string nsrc = error["srcResolved"];
+                
                 if(nsrc == "")
                 {
+
+
                     if(error.find("src") != error.end())
                     {
-                        nsrc = error["src"];
+                        std::string nsrc = error["src"]; 
+                        std::cout << "Using SRC member" << std::endl; 
+
                     }
                     else
                     {
-                        std::cout << "NO SOURCE CODE" << std::endl; 
+                        std::cout << "NO SOURCE CODE" << std::endl;
+                        failed = true; 
                     }
                 }
-                fixes.push_back(std::make_pair(strLineNum,error["srcResolved"])); 
-                std::cout << "srcResolved: " << error["srcResolved"] << std::endl; 
+                fixes.push_back(std::make_pair(strLineNum,nsrc)); 
+                std::cout << "srcResolved: " << nsrc << std::endl; 
                 fileBackup = error["file"]; 
             }
-            if (fPath != fileBackup)
+            if (fPath != fileBackup && !failed)
             {
                 fPath = fileBackup;
                 std::cout << "Switch" << std::endl; 
             }
             //std::fstream cppfile(fPath, std::ios::in | std::ios::out);
             std::ifstream cppfile(fPath);
-            if(!cppfile.is_open())
+            if(!cppfile.is_open() && !failed)
             {
                 fPath = fileBackup;
                 cppfile.open(fileBackup); 
             }
-            if(cppfile.is_open())
+            if(cppfile.is_open() && !failed)
             {
                 std::cout << "CPP file is open" << std::endl; 
                 int currentLine = 0; 
@@ -365,8 +374,8 @@ int main()
                 resolvedcpp.close();
                 int offset = strlen("Code/toCompile/"); 
                 std::cout << "fPath: " << fPath << std::endl; 
-                std::cout << "Path size: " << fPath.size() << std::endl; 
-                std::cout << "offset size: " << offset << std:: endl; 
+                // std::cout << "Path size: " << fPath.size() << std::endl; 
+                // std::cout << "offset size: " << offset << std:: endl; 
                 std::string target = fPath.substr(offset, fPath.size() - offset - 4);
                 std::cout << "Target: " << target << std::endl; 
 
@@ -380,6 +389,7 @@ int main()
             else{
                 std::cout << "failed to open cpp";
                 input["success"]="false";
+                
             }
         }
     });
@@ -444,14 +454,15 @@ int main()
         {"success",""}
 
     };
-       json compJob {
+       json compJob4 {
         {"identifier", "compile"},
-        {"inputId","syntaxerror"},
-        {"inputData","syntaxerror"},
+        {"inputId","typeerror"},
+        {"inputData","typeerror"},
         {"output",""},
         {"success",""}
 
     };
+    syst->loadInput(compJob4);
     syst->loadInput(compJob3);
     syst->loadInput(compJob2); 
     syst->loadInput(compJob);
