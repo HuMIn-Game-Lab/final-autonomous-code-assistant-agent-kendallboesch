@@ -7,9 +7,10 @@ import seaborn as sns
 
 
 # instruction = 'errorsolve'
+# instruction = 'flowgen'
 # openai.api_base="http://localhost:4891/v1"
 # promptFile = 'errors.json'
-
+# promptFile = 'Data/LLMFlowscriptPrompt.txt'
 instruction = sys.argv[1]
 openai.api_base=sys.argv[2]
 promptFile = sys.argv[3]
@@ -102,33 +103,30 @@ if instruction == 'errorsolve':
     print('fixedErrors.json')
     
 elif instruction == 'flowgen':
-    print("FLOWGEN")
     basePrompt=''
-    with open('Data/flowscriptGenerationPrompt.txt','r') as file:
+    with open('Data/LLMFlowScriptSingleShot.txt','r') as file:
         basePrompt = file.read(); 
     
     with open(promptFile) as file:
         prompt = file.read()
           
-        basePrompt = basePrompt + prompt + '\nDo not include anything other than the Flowscript script in your response\n'
+    basePrompt = basePrompt + prompt + '\nDo not include anything other than the Flowscript script in your response\n'
         
         
-        response = openai.Completion.create(
-            model=model,
-            prompt=basePrompt,
-            max_tokens=750,
-            temperature=0.28,
-            top_p=0.95,
-            n=1,
-            echo=True,
-            stream=False
-        )
-        # print(response['choices'][0]['text'])
-        text = response['choices'][0]['text']
-        LLMresponse = text[len(basePrompt):]
-        print(LLMresponse)
-        
-    #     write.append(response)
-    # with open("Data/convo.json", 'w') as json_file:
-    #     json.dump(write, json_file, indent=4)
+    response = openai.Completion.create(
+        model=model,
+        prompt=basePrompt,
+        max_tokens=750,
+        temperature=0.28,
+        top_p=0.95,
+        n=1,
+        echo=True,
+        stream=False
+    )
+
+    text = response['choices'][0]['text']
+    LLMresponse = text[len(basePrompt):]
+    with open('Code/Flowscript/script.md', 'w') as f:
+        f.write(LLMresponse)
+    print('Code/Flowscript/script.md')
     
